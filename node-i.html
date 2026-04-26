@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Node I — Deployment | CPM WebVR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { background: #000; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+      #start-screen {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(135deg, #0a0a1a 0%, #1a1000 50%, #0a0a1a 100%);
+        display: flex; flex-direction: column; align-items: center;
+        justify-content: center; z-index: 9999; text-align: center; padding: 24px;
+      }
+      .node-badge { display: inline-block; padding: 6px 20px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; background: #cc8800; color: #fff; box-shadow: 0 0 20px rgba(204,136,0,0.6); }
+      .end-label { display: inline-block; padding: 4px 14px; border-radius: 50px; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; background: rgba(255,221,0,0.1); border: 1px solid #ffdd00; color: #ffdd00; }
+      #start-screen h1 { font-size: clamp(20px, 5vw, 34px); font-weight: 700; color: #ffffff; margin-bottom: 6px; }
+      .task-meta { font-size: 14px; color: #ffaa44; margin-bottom: 24px; letter-spacing: 1px; }
+      .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; max-width: 420px; width: 100%; }
+      .info-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,170,0,0.25); border-radius: 10px; padding: 14px 16px; text-align: left; }
+      .info-card .label { font-size: 10px; color: #886644; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+      .info-card .value { font-size: 18px; font-weight: 700; color: #ffffff; }
+      .info-card .value.end { color: #ffdd00; }
+      .info-card .value.critical { color: #ffaa44; }
+      .summary-box {
+        background: rgba(255,221,0,0.05); border: 1px solid rgba(255,221,0,0.2);
+        border-radius: 10px; padding: 16px 20px; margin-bottom: 16px;
+        max-width: 460px; text-align: left;
+      }
+      .summary-box h3 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #ffdd00; margin-bottom: 10px; }
+      .summary-box .path-line { font-size: 13px; color: #ffaa44; margin-bottom: 6px; font-family: monospace; }
+      .summary-box .path-line span { color: #ff4444; font-weight: 700; }
+      .narration-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; max-width: 460px; text-align: left; }
+      .narration-box p { font-size: 13px; color: #9988aa; line-height: 1.7; }
+      .narration-box strong { color: #ffccaa; }
+      #start-btn { padding: 15px 44px; font-size: 15px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: linear-gradient(135deg, #996600, #ffaa00); color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 24px rgba(255,170,0,0.4); transition: transform 0.2s, box-shadow 0.2s; }
+      #start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255,170,0,0.6); }
+      .nav-hint { margin-top: 16px; font-size: 11px; color: #445566; }
+    </style>
+  </head>
+  <body>
+    <div id="start-screen">
+      <div class="node-badge">🏁 Project End Node</div>
+      <div class="end-label">PROJECT COMPLETE — DAY 20</div>
+      <h1>Task I: Deployment</h1>
+      <p class="task-meta">Duration: 1 day &nbsp;|&nbsp; Depends on: Task H &nbsp;|&nbsp; Float: 0</p>
+
+      <div class="info-grid">
+        <div class="info-card"><div class="label">Duration</div><div class="value">1 Day</div></div>
+        <div class="info-card"><div class="label">Project End</div><div class="value end">Day 20</div></div>
+        <div class="info-card"><div class="label">Dependencies</div><div class="value" style="font-size:14px">Task H</div></div>
+        <div class="info-card"><div class="label">Path Status</div><div class="value critical" style="font-size:14px">CRITICAL</div></div>
+      </div>
+
+      <div class="summary-box">
+        <h3>Complete Critical Path</h3>
+        <div class="path-line"><span>A</span>(3) → <span>C</span>(2) → <span>D</span>(6) → <span>F</span>(3) → <span>G</span>(2) → <span>H</span>(3) → <span>I</span>(1) = <span>20 days</span></div>
+        <div class="path-line" style="color:#44ee88">B(4) → E(5) path = 19 days — 1 day float</div>
+      </div>
+
+      <div class="narration-box">
+        <p><strong>Why this matters:</strong> Every critical path task before this one has contributed to Day 20. The project end date is the sum of all critical path task durations. Any delay anywhere on the critical path moves this date forward. This is why project managers monitor zero-float tasks obsessively.</p>
+      </div>
+
+      <button id="start-btn" onclick="enterScene()">ENTER NODE I</button>
+      <p class="nav-hint">Audio narration will play automatically on entry</p>
+    </div>
+
+    <a-scene background="color: #080808" vr-mode-ui="enabled: true" loading-screen="enabled: false">
+      <a-assets timeout="15000">
+        <img id="bg" src="assets/images/node-i.jpg" crossorigin="anonymous" />
+        <audio id="narration" src="assets/audio/node-i.mp3" preload="auto"></audio>
+      </a-assets>
+      <a-sky src="#bg" rotation="0 -90 0"></a-sky>
+      <a-light type="ambient" color="#ffe8cc" intensity="0.8"></a-light>
+      <a-light type="point" color="#ffaa00" intensity="0.4" position="0 3 -2" distance="15"></a-light>
+      <a-sound id="node-audio" src="#narration" autoplay="false" loop="false" positional="false"></a-sound>
+
+      <a-entity position="0 2.0 -3.5">
+        <a-plane width="4.4" height="3.4" color="#04060f" opacity="0.93" material="shader:flat"></a-plane>
+        <!-- Gold double accent for project end -->
+        <a-plane width="4.4" height="0.22" color="#cc8800" opacity="1" material="shader:flat" position="0 1.59 0.01"></a-plane>
+        <a-plane width="4.4" height="0.06" color="#ffdd00" opacity="0.7" material="shader:flat" position="0 1.35 0.01"></a-plane>
+
+        <a-text value="🏁  TASK I  —  PROJECT END" position="0 1.12 0.02" align="center" color="#ffdd00" width="4.0" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
+        <a-text value="Deployment" position="0 0.78 0.02" align="center" color="#ffffff" width="3.8"></a-text>
+        <a-plane width="3.8" height="0.01" color="#334455" opacity="0.8" material="shader:flat" position="0 0.56 0.02"></a-plane>
+
+        <a-text value="Duration: 1 day" position="-1.1 0.30 0.02" align="center" color="#aabbcc" width="1.8"></a-text>
+        <a-text value="Float: 0 days" position="1.1 0.30 0.02" align="center" color="#ffaa44" width="1.8"></a-text>
+        <a-text value="Dependencies: Task H must complete first" position="0 0.02 0.02" align="center" color="#aabbcc" width="3.8"></a-text>
+        <a-plane width="3.8" height="0.01" color="#334455" opacity="0.8" material="shader:flat" position="0 -0.20 0.02"></a-plane>
+
+        <!-- Critical path summary -->
+        <a-plane width="3.8" height="0.52" color="#1a1000" opacity="0.9" material="shader:flat" position="0 -0.54 0.02"></a-plane>
+        <a-text value="CRITICAL PATH: A→C→D→F→G→H→I = 20 DAYS\nNon-critical: A→B→E→F→G→H→I = 19 days"
+          position="0 -0.54 0.03" align="center" color="#ffdd00" width="3.6" line-height="55"></a-text>
+
+        <a-text value="Early Start: Day 19   |   Early Finish: Day 20" position="0 -1.00 0.02" align="center" color="#7788aa" width="3.8"></a-text>
+        <a-text value="Late Start:  Day 19   |   Late Finish:  Day 20" position="0 -1.20 0.02" align="center" color="#7788aa" width="3.8"></a-text>
+        <a-plane width="4.4" height="0.22" color="#cc8800" opacity="0.3" material="shader:flat" position="0 -1.59 0.01"></a-plane>
+      </a-entity>
+
+      <!-- Return to network -->
+      <a-entity position="-2.2 0.6 -3.5">
+        <a-plane width="1.8" height="0.55" color="#1a2a4a" opacity="0.95" material="shader:flat" link="href:index.html" class="clickable"></a-plane>
+        <a-text value="◀  Return to Network" position="0 0 0.02" align="center" color="#4a9eff" width="1.6"></a-text>
+      </a-entity>
+
+      <!-- Consequence simulator link -->
+      <a-entity position="2.2 0.6 -3.5">
+        <a-plane width="1.8" height="0.55" color="#1a1000" opacity="0.95" material="shader:flat" link="href:consequence.html" class="clickable"></a-plane>
+        <a-text value="Try Delay Simulator  ▶" position="0 0 0.02" align="center" color="#ffaa00" width="1.6"></a-text>
+      </a-entity>
+
+      <a-entity camera look-controls="pointerLockEnabled:false" wasd-controls="acceleration:15" position="0 1.6 0.5">
+        <a-cursor fuse="true" fuse-timeout="2000" color="#ffffff" material="shader:flat; color:#ffffff" opacity="0.85"
+          animation__fusing="property:scale; startEvents:fusing; from:1 1 1; to:0.5 0.5 0.5; dur:2000"
+          animation__mouseleave="property:scale; startEvents:mouseleave; to:1 1 1; dur:200">
+        </a-cursor>
+      </a-entity>
+    </a-scene>
+
+    <script>
+      function enterScene() {
+        document.getElementById('start-screen').style.display = 'none';
+        setTimeout(function () {
+          var sound = document.getElementById('node-audio');
+          if (sound) sound.components.sound.playSound();
+        }, 800);
+      }
+    </script>
+  </body>
+</html>

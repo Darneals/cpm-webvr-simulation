@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Consequence Simulator | CPM WebVR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { background: #000; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+      /* ── START SCREEN ── */
+      #start-screen {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(135deg, #05080f 0%, #0d0522 50%, #05080f 100%);
+        display: flex; flex-direction: column; align-items: center;
+        justify-content: center; z-index: 9999; text-align: center; padding: 24px;
+      }
+      .sim-badge {
+        display: inline-block; padding: 6px 20px; border-radius: 50px;
+        font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+        margin-bottom: 20px; background: rgba(148,0,255,0.2);
+        border: 1px solid #9400ff; color: #cc66ff;
+        box-shadow: 0 0 20px rgba(148,0,255,0.3);
+      }
+      #start-screen h1 {
+        font-size: clamp(22px, 5vw, 36px); font-weight: 700;
+        color: #ffffff; margin-bottom: 8px; letter-spacing: -0.5px;
+      }
+      #start-screen h1 span { color: #cc66ff; }
+      .sim-subtitle {
+        font-size: 14px; color: #8877aa; margin-bottom: 28px;
+        max-width: 480px; line-height: 1.6;
+      }
+      .how-to-box {
+        background: rgba(255,255,255,0.03); border: 1px solid rgba(148,0,255,0.2);
+        border-radius: 12px; padding: 18px 24px; margin-bottom: 28px;
+        max-width: 460px; text-align: left;
+      }
+      .how-to-box h3 {
+        font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+        color: #cc66ff; margin-bottom: 12px;
+      }
+      .how-to-box .step {
+        display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px;
+      }
+      .how-to-box .step-num {
+        width: 22px; height: 22px; border-radius: 50%; background: rgba(148,0,255,0.3);
+        border: 1px solid #9400ff; color: #cc66ff; font-size: 11px; font-weight: 700;
+        display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      }
+      .how-to-box .step p { font-size: 13px; color: #9988aa; line-height: 1.5; }
+      .how-to-box .step strong { color: #ccbbdd; }
+      #start-btn {
+        padding: 15px 44px; font-size: 15px; font-weight: 700;
+        letter-spacing: 1px; text-transform: uppercase;
+        background: linear-gradient(135deg, #6600cc, #9400ff);
+        color: white; border: none; border-radius: 50px; cursor: pointer;
+        box-shadow: 0 4px 24px rgba(148,0,255,0.4);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      #start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(148,0,255,0.6); }
+      .nav-hint { margin-top: 16px; font-size: 11px; color: #445566; }
+
+      /* ── CONSEQUENCE HUD OVERLAY ── */
+      #consequence-hud {
+        position: fixed; top: 0; left: 0; right: 0;
+        display: none; z-index: 200; pointer-events: none;
+      }
+      #hud-top {
+        background: linear-gradient(180deg, rgba(5,8,15,0.95) 0%, transparent 100%);
+        padding: 14px 24px 24px;
+        display: flex; align-items: center; justify-content: space-between;
+      }
+      #hud-title {
+        font-size: 13px; font-weight: 700; color: #cc66ff;
+        letter-spacing: 2px; text-transform: uppercase;
+      }
+      #project-end-counter {
+        font-size: 18px; font-weight: 700; color: #ffffff;
+        background: rgba(148,0,255,0.2); border: 1px solid rgba(148,0,255,0.4);
+        border-radius: 8px; padding: 6px 16px;
+        transition: color 0.3s, background 0.3s;
+      }
+      #project-end-counter.delayed {
+        color: #ff4444; background: rgba(204,17,17,0.2);
+        border-color: rgba(204,17,17,0.5);
+        animation: counterPulse 0.5s ease-in-out;
+      }
+      @keyframes counterPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.12); }
+        100% { transform: scale(1); }
+      }
+
+      /* ── RESULT PANEL OVERLAY ── */
+      #result-overlay {
+        position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+        display: none; z-index: 200; pointer-events: none;
+        max-width: 500px; width: 90%;
+      }
+      #result-panel {
+        border-radius: 12px; padding: 16px 22px; text-align: center;
+        border: 1px solid transparent; transition: all 0.4s;
+      }
+      #result-panel.critical {
+        background: rgba(204,17,17,0.15); border-color: rgba(204,17,17,0.5);
+      }
+      #result-panel.noncritical {
+        background: rgba(0,204,102,0.1); border-color: rgba(0,204,102,0.4);
+      }
+      #result-title {
+        font-size: 15px; font-weight: 700; margin-bottom: 6px;
+        letter-spacing: 1px; text-transform: uppercase;
+      }
+      #result-title.critical { color: #ff4444; }
+      #result-title.noncritical { color: #44ee88; }
+      #result-body { font-size: 13px; color: #aabbcc; line-height: 1.6; }
+
+      /* ── BOTTOM INSTRUCTION BAR ── */
+      #instruction-bar {
+        position: fixed; bottom: 0; left: 0; right: 0;
+        display: none; z-index: 200; pointer-events: none;
+        background: linear-gradient(0deg, rgba(5,8,15,0.95) 0%, transparent 100%);
+        padding: 20px 24px 16px; text-align: center;
+      }
+      #instruction-text { font-size: 13px; color: #8899bb; }
+      #instruction-text span { color: #cc66ff; font-weight: 600; }
+
+      /* ── RESET BUTTON ── */
+      #reset-btn {
+        position: fixed; top: 60px; right: 20px;
+        display: none; z-index: 300; pointer-events: all;
+        padding: 8px 18px; font-size: 12px; font-weight: 700;
+        letter-spacing: 1px; text-transform: uppercase;
+        background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
+        color: #aabbcc; border-radius: 6px; cursor: pointer;
+        transition: background 0.2s;
+      }
+      #reset-btn:hover { background: rgba(255,255,255,0.15); }
+    </style>
+  </head>
+  <body>
+
+    <!-- ═══════════════ START SCREEN ═══════════════ -->
+    <div id="start-screen">
+      <div class="sim-badge">⚡ Interactive Simulator</div>
+      <h1>CPM <span>Consequence</span> Simulator</h1>
+      <p class="sim-subtitle">
+        Experience what happens when project tasks are delayed.
+        Gaze at any node for 2 seconds to simulate a 1-day delay and watch the cascade effect unfold in real time.
+      </p>
+
+      <div class="how-to-box">
+        <h3>How it works</h3>
+        <div class="step">
+          <div class="step-num">1</div>
+          <p>Gaze at any <strong>red node</strong> for 2 seconds — it is on the critical path.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <p>Watch the <strong>cascade animation</strong> — downstream nodes light up red one by one.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <p>The <strong>Project End Date counter</strong> at the top increments — the project is now late.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <p>Now gaze at a <strong>green node</strong> (B or E) — watch what happens differently.</p>
+        </div>
+      </div>
+
+      <button id="start-btn" onclick="startSimulator()">LAUNCH SIMULATOR</button>
+      <p class="nav-hint">WASD to move &nbsp;|&nbsp; Mouse drag to look around</p>
+    </div>
+
+    <!-- ═══════════════ HUD ═══════════════ -->
+    <div id="consequence-hud">
+      <div id="hud-top">
+        <div id="hud-title">Consequence Simulator — Gaze at any node to trigger a 1-day delay</div>
+        <div id="project-end-counter">Project End: Day <span id="day-counter">20</span></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ RESULT PANEL ═══════════════ -->
+    <div id="result-overlay">
+      <div id="result-panel">
+        <div id="result-title"></div>
+        <div id="result-body"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ INSTRUCTION BAR ═══════════════ -->
+    <div id="instruction-bar">
+      <p id="instruction-text">
+        <span>Gaze at a node</span> for 2 seconds to simulate a delay &nbsp;|&nbsp;
+        <span>Green nodes</span> have float — <span>Red nodes</span> cascade
+      </p>
+    </div>
+
+    <!-- ═══════════════ RESET BUTTON ═══════════════ -->
+    <button id="reset-btn" onclick="resetSimulator()">↺ Reset</button>
+
+    <!-- ═══════════════ A-FRAME SCENE ═══════════════ -->
+    <a-scene
+      background="color: #05080f"
+      fog="type: exponential; color: #05080f; density: 0.010"
+      renderer="antialias: true; colorManagement: true"
+      vr-mode-ui="enabled: true"
+      loading-screen="enabled: false"
+    >
+      <a-assets timeout="15000"></a-assets>
+
+      <a-light type="ambient" color="#1a1030" intensity="0.7"></a-light>
+      <a-light type="directional" color="#9966ff" intensity="0.3" position="0 10 5"></a-light>
+      <a-light type="point" color="#ffffff" intensity="0.1" position="2.5 6 0" distance="30"></a-light>
+
+      <!-- ══════════════════════════════════════
+           DEPENDENCY LINES
+      ══════════════════════════════════════ -->
+      <!-- A→C critical -->
+      <a-entity id="line-ac" line="start:-8 1.6 -6; end:-4 1.6 -8; color:#ff3333; opacity:0.6"></a-entity>
+      <!-- A→B non-critical -->
+      <a-entity id="line-ab" line="start:-8 1.6 -6; end:-4 4.5 -6; color:#00cc66; opacity:0.6"></a-entity>
+      <!-- C→D critical -->
+      <a-entity id="line-cd" line="start:-4 1.6 -8; end:0 1.6 -10; color:#ff3333; opacity:0.6"></a-entity>
+      <!-- B→E non-critical -->
+      <a-entity id="line-be" line="start:-4 4.5 -6; end:2 4.5 -7; color:#00cc66; opacity:0.6"></a-entity>
+      <!-- D→F critical -->
+      <a-entity id="line-df" line="start:0 1.6 -10; end:4 1.6 -8; color:#ff3333; opacity:0.6"></a-entity>
+      <!-- E→F converging -->
+      <a-entity id="line-ef" line="start:2 4.5 -7; end:4 1.6 -8; color:#ffaa00; opacity:0.6"></a-entity>
+      <!-- F→G critical -->
+      <a-entity id="line-fg" line="start:4 1.6 -8; end:7 1.6 -6; color:#ff3333; opacity:0.6"></a-entity>
+      <!-- G→H critical -->
+      <a-entity id="line-gh" line="start:7 1.6 -6; end:10 1.6 -4; color:#ff3333; opacity:0.6"></a-entity>
+      <!-- H→I critical -->
+      <a-entity id="line-hi" line="start:10 1.6 -4; end:13 1.6 -2; color:#ff3333; opacity:0.6"></a-entity>
+
+      <!-- ══════════════════════════════════════
+           NODE A — Critical | Float: 0
+      ══════════════════════════════════════ -->
+      <a-entity id="csq-node-a" position="-8 1.6 -6" delay-node="taskId:A; isCritical:true; float:0; taskName:Requirements Analysis; downstream:csq-node-c,csq-node-d,csq-node-f,csq-node-g,csq-node-h,csq-node-i">
+        <a-torus radius="0.72" radius-tubular="0.03" color="#ff3333" opacity="0.4"
+          animation="property:rotation; to:0 360 0; loop:true; dur:8000; easing:linear"></a-torus>
+        <a-sphere id="sphere-a" radius="0.55" color="#cc1111"
+          material="shader:standard; metalness:0.3; roughness:0.5; emissive:#550000; emissiveIntensity:0.4"
+          animation="property:scale; to:1.08 1.08 1.08; dir:alternate; loop:true; dur:1800; easing:easeInOutSine">
+        </a-sphere>
+        <a-text value="A\nFloat:0\nCRITICAL" position="0 1.1 0" align="center" color="#ff8888" width="1.6" line-height="50"></a-text>
+      </a-entity>
+
+      <!-- ══════════════════════════════════════
+           NODE B — Non-Critical | Float: 1
+      ══════════════════════════════════════ -->
+      <a-entity id="csq-node-b" position="-4 4.5 -6" delay-node="taskId:B; isCritical:false; float:1; taskName:UI/UX Design; downstream:csq-node-e">
+        <a-torus radius="0.72" radius-tubular="0.03" color="#00cc66" opacity="0.4"
+          animation="property:rotation; to:0 360 0; loop:true; dur:10000; easing:linear"></a-torus>
+        <a-sphere id="sphere-b" radius="0.55" color="#008844"
+          material="shader:standard; metalness:0.3; roughness:0.5; emissive:#003322; emissiveIntensity:0.4"
+          animation="property:scale; to:1.08 1.08 1.08; dir:alternate; loop:true; dur:2200; easing:easeInOutSine">
+        </a-sphere>
+        <a-text value="B\nFloat:1\nSAFE" position="0 1.1 0" align="center" color="#88ee88" width="1.6" line-height="50"></a-text>
+      </a-entity>
+
+      <!-- ══════════════════════════════════════
+           NODE C — Critical | Float: 0
+      ══════════════════════════════════════ -->
+      <a-entity id="csq-node-c" position="-4 1.6 -8" delay-node="taskId:C; isCritical:true; float:0; taskName:Database Schema Design; downstream:csq-node-d,csq-node-f,csq-node-g,csq-node-h,csq-node-i">
+        <a-torus radius="0.72" radius-tubular="0.03" color="#ff3333" opacity="0.4"
+          animation="property:rotation; to:0 360 0; loop:true; dur:7500; easing:linear"></a-torus>
+        <a-sphere id="sphere-c" radius="0.55" color="#cc1111"
+          material="shader:standard; metalness:0.3; roughness:0.5; emissive:#550000; emissiveIntensity:0.4"
+          animation="property:scale; to:1.08 1.08 1.08; dir:alternate; loop:true; dur:1600; easing:easeInOutSine">
+        </a-sphere>
+        <a-text value="C\nFloat:0\nCRITICAL" position="0 1.1 0" align="center" color="#ff8888" width="1.6" line-height="50"></a-text>
+      </a-entity>
+
+      <!-- ══════════════════════════════════════
+           NODE D — Critical | Float: 0 (LONGEST)
+      ══════════════════════════════════════ -->
+      <a-entity id="csq-node-d" position="0 1.6 -10" delay-node="taskId:D; isCritical:true; float:0; taskName:Backend API Development; downstream:csq-node-f,csq-node-g,csq-node-h,csq-node-i">
+        <a-torus radius="0.82" radius-tubular="0.04" color="#ff1111" opacity="0.5"
+          animation="property:rotation; to:0 360 0; loop:true; dur:6000; easing:linear"></a-torus>
+        <a-sphere id="sphere-d" radius="0.65" color="#dd0000"
+          material="shader:standard; metalness:0.4; roughness:0.4; emissive:#660000; emissiveIntensity:0.5"
+          animation="property:scale; to:1.1 1.1 1.1; dir:alternate; loop:true; dur:1400; easing:easeInOutSine">
+        </a-sphere>
+        <a-text value="D\nFloat:0\n6 DAYS" position="0 1.2 0" align="center" color="#ff6666" width="1.6" line-height="50"></a-text>
+      </a-entity>
+
+      <!-- ══════════════════════════════════════
+           NODE E — Non-Critical | Float: 1
+      ══════════════════════════════════════ -->
+      <a-entity id="csq-node-e" position="2 4.5 -7" delay-node="taskId:E; isCritical:false; float:1; taskName:Frontend Development; downstream:">
+        <a-torus radius="0.72" radius-tubular="0.03" color="#00cc66" opacity="0.4"
+          animation="property:rotation; to:0 360 0; loop:true; dur:11000; easing:linear"></a-torus>
+        <a-sphere id="sphere-e" radius="0.55" color="#008844"
+          material="shader:standard; metalness:0.3; roughness:0.5; emissive:#003322; emissiveIntensity:0.4"
+          animation="property:scale; to:1.08 1.08 1.08; dir:alternate; loop:true; dur:2400; easing:easeInOutSine">
+        </a-sphere>
+        <a-text value="E\nFloat:1\nSAFE" position="0 1.1 0" align="center" color="#88ee88" width="1.6" line-height="50"></a-text>
+      </a-entity>
+
+      <!-- ══════════════════════════════════════
+           NODE F — Critical | Float: 0 (CONVERGENCE)
+      ══════════════════════════════════════ -->
+      <a-entity id="csq-node-f" position="4 1.6 -8" delay-node="taskId:F; isCritical:true; float:0; taskName:API Integration; downstream:csq-node-g,csq-node-h,csq-node-i">
+        <a-torus radius="0.78" radius-tubular="0.035" color="#ff3333" opacity="0.5"
+          animation="property:rotation; to:0 360 0; loop:true; dur:7000; easing:linear"></a-torus>
+        <a-sphere id="sphere-f" radius="0.60" color="#cc1111"
+          material="shader:standard; metalness:0.3; roughness:0.5; emissive:#550000; emissiveIntensity:0.4"
+          animation="property:scale; to:1.09 1.09 1.09; dir:alternate; loop:true; dur:1700; easing:easeInOutSine">
+        </a-sphere>
+        <a-text value="F\nFloat:0\nCONVERGE" position="0 1.1 0" align="center" color="#ff8888" width="1.6" line-height="50"></a-text>
+      </a-entity>
+
+      <!-- ══════════════════════════════════════
+           NODE G — Critical | Float: 0
+      ══════════════════════════════════════ -->
+      <a-entity id="csq-node-g" position="7 1.6 -6" delay-node="taskId:G; isCritical:true; float:0; taskName:Unit Testing; downstream:csq-node-h,csq-node-i">
+        <a-torus radius="0.72" radius-tubular="0.03" color="#ff3333" opacity="0.4"
+          animation="property:rotation; to:0 360 0; loop:true; dur:8500; easing:linear"></a-torus>
+        <a-sphere id="sphere-g" radius="0.55" color="#cc1111"
+          material="shader:standard; metalness:0.3; roughness:0.5; emissive:#550000; emissiveIntensity:0.4"
+          animation="property:scale; to:1.08 1.08 1.08; dir:alternate; loop:true; dur:1900; easing:easeInOutSine">
+        </a-sphere>
+        <a-text value="G\nFloat:0\nCRITICAL" position="0 1.1 0" align="center" color="#ff8888" width="1.6" line-height="50"></a-text>
+      </a-entity>
+
+      <!-- ══════════════════════════════════════
+           NODE H — Critical | Float: 0
+      ══════════════════════════════════════ -->
+      <a-entity id="csq-node-h" position="10 1.6 -4" delay-node="taskId:H; isCritical:true; float:0; taskName:User Acceptance Testing; downstream:csq-node-i">
+        <a-torus radius="0.72" radius-tubular="0.03" color="#ff3333" opacity="0.4"
+          animation="property:rotation; to:0 360 0; loop:true; dur:9000; easing:linear"></a-torus>
+        <a-sphere id="sphere-h" radius="0.55" color="#cc1111"
+          material="shader:standard; metalness:0.3; roughness:0.5; emissive:#550000; emissiveIntensity:0.4"
+          animation="property:scale; to:1.08 1.08 1.08; dir:alternate; loop:true; dur:2000; easing:easeInOutSine">
+        </a-sphere>
+        <a-text value="H\nFloat:0\nCRITICAL" position="0 1.1 0" align="center" color="#ff8888" width="1.6" line-height="50"></a-text>
+      </a-entity>
+
+      <!-- ══════════════════════════════════════
+           NODE I — Critical | Float: 0 (PROJECT END)
+      ══════════════════════════════════════ -->
+      <a-entity id="csq-node-i" position="13 1.6 -2" delay-node="taskId:I; isCritical:true; float:0; taskName:Deployment; downstream:">
+        <a-torus radius="0.82" radius-tubular="0.035" color="#ffdd00" opacity="0.5"
+          animation="property:rotation; to:0 360 0; loop:true; dur:5000; easing:linear"></a-torus>
+        <a-torus radius="0.95" radius-tubular="0.02" color="#ffaa00" opacity="0.25"
+          animation="property:rotation; to:0 -360 0; loop:true; dur:8000; easing:linear"></a-torus>
+        <a-sphere id="sphere-i" radius="0.60" color="#cc8800"
+          material="shader:standard; metalness:0.5; roughness:0.3; emissive:#664400; emissiveIntensity:0.5"
+          animation="property:scale; to:1.1 1.1 1.1; dir:alternate; loop:true; dur:1500; easing:easeInOutSine">
+        </a-sphere>
+        <a-text value="I\nDay 20\nEND" position="0 1.2 0" align="center" color="#ffdd88" width="1.6" line-height="50"></a-text>
+      </a-entity>
+
+      <!-- ══════════════════════════════════════
+           TITLE PANEL
+      ══════════════════════════════════════ -->
+      <a-entity position="2.5 5.8 -7">
+        <a-plane width="6.0" height="0.65" color="#0d0522" opacity="0.88" material="shader:flat"></a-plane>
+        <a-text value="CONSEQUENCE SIMULATOR — Gaze at any node to trigger a 1-day delay"
+          position="0 0 0.01" align="center" color="#cc66ff" width="5.6"></a-text>
+      </a-entity>
+
+      <!-- ══════════════════════════════════════
+           LEGEND PANEL
+      ══════════════════════════════════════ -->
+      <a-entity position="2.5 -0.1 -5">
+        <a-plane width="5.5" height="0.55" color="#05080f" opacity="0.85" material="shader:flat"></a-plane>
+        <a-text value="RED = Critical Path (zero float — delay cascades)     GREEN = Non-Critical (float absorbs delay)"
+          position="0 0 0.01" align="center" color="#8899bb" width="5.2"></a-text>
+      </a-entity>
+
+      <!-- RETURN BUTTON -->
+      <a-entity position="-5 0.5 -5">
+        <a-plane width="2.2" height="0.55" color="#1a2a4a" opacity="0.95"
+          material="shader:flat" link="href:index.html" class="clickable"></a-plane>
+        <a-text value="◀  Return to Network" position="0 0 0.02"
+          align="center" color="#4a9eff" width="2.0"></a-text>
+      </a-entity>
+
+      <!-- ── CAMERA ── -->
+      <a-entity camera look-controls="pointerLockEnabled:false"
+        wasd-controls="acceleration:20" position="2.5 1.6 2">
+        <a-cursor fuse="true" fuse-timeout="2000" color="#cc66ff"
+          material="shader:flat; color:#cc66ff" opacity="0.9"
+          animation__fusing="property:scale; startEvents:fusing; from:1 1 1; to:0.5 0.5 0.5; dur:2000"
+          animation__mouseleave="property:scale; startEvents:mouseleave; to:1 1 1; dur:200">
+        </a-cursor>
+      </a-entity>
+
+    </a-scene>
+
+    <!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+    <script>
+
+      // ── State ──────────────────────────────────────────────────
+      var projectEndDay = 20;
+      var simulatorActive = false;
+      var animating = false;
+
+      // Original sphere colours for reset
+      var originalColors = {
+        'csq-node-a': '#cc1111', 'csq-node-b': '#008844',
+        'csq-node-c': '#cc1111', 'csq-node-d': '#dd0000',
+        'csq-node-e': '#008844', 'csq-node-f': '#cc1111',
+        'csq-node-g': '#cc1111', 'csq-node-h': '#cc1111',
+        'csq-node-i': '#cc8800'
+      };
+
+      var originalEmissive = {
+        'csq-node-a': '#550000', 'csq-node-b': '#003322',
+        'csq-node-c': '#550000', 'csq-node-d': '#660000',
+        'csq-node-e': '#003322', 'csq-node-f': '#550000',
+        'csq-node-g': '#550000', 'csq-node-h': '#550000',
+        'csq-node-i': '#664400'
+      };
+
+      // ── Start simulator ────────────────────────────────────────
+      function startSimulator() {
+        document.getElementById('start-screen').style.display = 'none';
+        document.getElementById('consequence-hud').style.display = 'block';
+        document.getElementById('instruction-bar').style.display = 'block';
+        document.getElementById('reset-btn').style.display = 'block';
+        simulatorActive = true;
+
+        // Unlock audio context
+        try {
+          var ctx = THREE.AudioContext.getContext();
+          if (ctx && ctx.state === 'suspended') ctx.resume();
+        } catch(e) {}
+      }
+
+      // ── Reset simulator ────────────────────────────────────────
+      function resetSimulator() {
+        if (animating) return;
+
+        projectEndDay = 20;
+        updateCounter(false);
+        hideResult();
+        animating = false;
+
+        // Restore all sphere colours
+        Object.keys(originalColors).forEach(function(nodeId) {
+          var entity = document.getElementById(nodeId);
+          if (!entity) return;
+          var sphere = entity.querySelector('a-sphere');
+          if (!sphere) return;
+          sphere.setAttribute('color', originalColors[nodeId]);
+          sphere.setAttribute('material', 'emissive', originalEmissive[nodeId]);
+          sphere.setAttribute('material', 'emissiveIntensity', 0.4);
+          sphere.setAttribute('scale', '1 1 1');
+        });
+
+        // Re-enable all delay-node components
+        var allNodes = document.querySelectorAll('[delay-node]');
+        allNodes.forEach(function(node) {
+          node.setAttribute('delay-node-active', 'true');
+        });
+
+        document.getElementById('instruction-bar').style.display = 'block';
+      }
+
+      // ── Update project end counter ─────────────────────────────
+      function updateCounter(isDelayed) {
+        var counter = document.getElementById('project-end-counter');
+        var daySpan = document.getElementById('day-counter');
+        daySpan.textContent = projectEndDay;
+        if (isDelayed) {
+          counter.classList.add('delayed');
+          setTimeout(function() { counter.classList.remove('delayed'); }, 600);
+        }
+      }
+
+      // ── Show result panel ──────────────────────────────────────
+      function showResult(isCritical, taskName, floatVal, cascadeCount) {
+        var overlay = document.getElementById('result-overlay');
+        var panel = document.getElementById('result-panel');
+        var title = document.getElementById('result-title');
+        var body = document.getElementById('result-body');
+
+        overlay.style.display = 'block';
+        panel.className = 'result-panel ' + (isCritical ? 'critical' : 'noncritical');
+        title.className = isCritical ? 'critical' : 'noncritical';
+
+        if (isCritical) {
+          title.textContent = '⚠ Critical Delay — Project Extended';
+          body.innerHTML = 'Task <strong>' + taskName + '</strong> was delayed by 1 day. ' +
+            'Zero float means the delay cascaded through <strong>' + cascadeCount +
+            ' downstream task' + (cascadeCount !== 1 ? 's' : '') + '</strong>. ' +
+            'Project end date is now <strong>Day ' + projectEndDay + '</strong>.';
+        } else {
+          title.textContent = '✔ Float Absorbed the Delay';
+          body.innerHTML = 'Task <strong>' + taskName + '</strong> was delayed by 1 day. ' +
+            'The <strong>' + floatVal + ' day' + (floatVal !== 1 ? 's' : '') + ' of float</strong> ' +
+            'absorbed the delay completely. ' +
+            'Project end date remains <strong>Day ' + projectEndDay + '</strong>.';
+        }
+      }
+
+      // ── Hide result panel ──────────────────────────────────────
+      function hideResult() {
+        document.getElementById('result-overlay').style.display = 'none';
+      }
+
+      // ── Flash a sphere bright white then to delayed red ────────
+      function flashNode(nodeId, delay, isCritical, callback) {
+        setTimeout(function() {
+          var entity = document.getElementById(nodeId);
+          if (!entity) { if (callback) callback(); return; }
+          var sphere = entity.querySelector('a-sphere');
+          if (!sphere) { if (callback) callback(); return; }
+
+          // Flash bright
+          sphere.setAttribute('color', '#ffffff');
+          sphere.setAttribute('material', 'emissiveIntensity', 1.0);
+
+          setTimeout(function() {
+            // Settle to delayed colour
+            if (isCritical) {
+              sphere.setAttribute('color', '#ff6600');
+              sphere.setAttribute('material', 'emissive', '#aa2200');
+              sphere.setAttribute('material', 'emissiveIntensity', 0.8);
+            } else {
+              sphere.setAttribute('color', '#ffdd00');
+              sphere.setAttribute('material', 'emissive', '#554400');
+              sphere.setAttribute('material', 'emissiveIntensity', 0.6);
+            }
+            if (callback) callback();
+          }, 300);
+        }, delay);
+      }
+
+      // ── A-Frame component: delay-node ──────────────────────────
+      AFRAME.registerComponent('delay-node', {
+        schema: {
+          taskId:     { type: 'string' },
+          taskName:   { type: 'string' },
+          isCritical: { type: 'boolean', default: true },
+          float:      { type: 'number',  default: 0 },
+          downstream: { type: 'string',  default: '' }
+        },
+
+        init: function() {
+          var data = this.data;
+          var el   = this.el;
+          var self = this;
+
+          // Hover highlight
+          el.addEventListener('mouseenter', function() {
+            if (!simulatorActive || animating) return;
+            var sphere = el.querySelector('a-sphere');
+            if (sphere) sphere.setAttribute('material', 'emissiveIntensity', 0.9);
+          });
+
+          el.addEventListener('mouseleave', function() {
+            var sphere = el.querySelector('a-sphere');
+            var nodeId = 'csq-node-' + data.taskId.toLowerCase();
+            if (sphere && originalColors[nodeId]) {
+              sphere.setAttribute('material', 'emissiveIntensity', 0.4);
+            }
+          });
+
+          // Gaze click — fuse cursor fires click after 2 seconds
+          el.addEventListener('click', function() {
+            if (!simulatorActive || animating) return;
+            self.triggerDelay();
+          });
+        },
+
+        triggerDelay: function() {
+          var data = this.data;
+          var self = this;
+          animating = true;
+
+          // Hide instruction bar during animation
+          document.getElementById('instruction-bar').style.display = 'none';
+          hideResult();
+
+          var nodeId = 'csq-node-' + data.taskId.toLowerCase();
+
+          if (data.isCritical) {
+            // ── CRITICAL PATH CASCADE ──────────────────────────
+            projectEndDay += 1;
+
+            // Flash the triggered node first
+            flashNode(nodeId, 0, true, null);
+
+            // Parse downstream nodes
+            var downstreamStr = data.downstream || '';
+            var downstreamNodes = downstreamStr.length > 0
+              ? downstreamStr.split(',').map(function(s) { return s.trim(); })
+              : [];
+
+            var cascadeCount = downstreamNodes.length;
+            var totalDelay = 400 + (downstreamNodes.length * 600);
+
+            // Cascade through downstream nodes
+            downstreamNodes.forEach(function(nodeId2, index) {
+              flashNode(nodeId2, 400 + (index * 600), true, null);
+            });
+
+            // Update counter after first cascade
+            setTimeout(function() {
+              updateCounter(true);
+            }, 600);
+
+            // Show result after full cascade
+            setTimeout(function() {
+              showResult(true, data.taskName, data.float, cascadeCount);
+              animating = false;
+            }, totalDelay + 400);
+
+          } else {
+            // ── NON-CRITICAL — FLOAT ABSORBS ──────────────────
+            // Flash the node amber briefly
+            flashNode(nodeId, 0, false, null);
+
+            setTimeout(function() {
+              // Restore to original green after showing absorption
+              setTimeout(function() {
+                var entity = document.getElementById(nodeId);
+                if (entity) {
+                  var sphere = entity.querySelector('a-sphere');
+                  if (sphere) {
+                    sphere.setAttribute('color', originalColors[nodeId]);
+                    sphere.setAttribute('material', 'emissive', originalEmissive[nodeId]);
+                    sphere.setAttribute('material', 'emissiveIntensity', 0.6);
+                  }
+                }
+              }, 1200);
+
+              updateCounter(false);
+              showResult(false, data.taskName, data.float, 0);
+              animating = false;
+            }, 800);
+          }
+        }
+      });
+
+    </script>
+  </body>
+</html>
