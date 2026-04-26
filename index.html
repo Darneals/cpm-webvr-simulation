@@ -141,6 +141,7 @@
       renderer="antialias: true; colorManagement: true; sortObjects: true"
       vr-mode-ui="enabled: true"
       loading-screen="dotsColor: #4a9eff; backgroundColor: #04060e"
+      screenshot="width: 3840; height: 2160"
     >
 
       <!-- ── ASSET PRELOAD ── -->
@@ -437,7 +438,7 @@
 
       <!-- Camera centred on compressed network: X=(-5+11)/2=3, pulled back to Z=7 -->
       <a-entity
-        camera
+        camera="fov: 100; near: 0.1; far: 1000"
         look-controls="pointerLockEnabled: false"
         wasd-controls="acceleration: 18"
         position="3 2.8 7"
