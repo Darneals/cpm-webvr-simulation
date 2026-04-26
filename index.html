@@ -168,29 +168,29 @@
            Amber = converging non-critical into critical
       ══════════════════════════════════════════════════ -->
       <!-- A → C -->
-      <a-entity line="start:-7 1.6 -5; end:-3 1.6 -7; color:#ff3333; opacity:0.75"></a-entity>
+      <a-entity line="start:-5 1.6 -5; end:-2 1.6 -7; color:#ff3333; opacity:0.75"></a-entity>
       <!-- A → B -->
-      <a-entity line="start:-7 1.6 -5; end:-3 4.2 -6; color:#00cc66; opacity:0.75"></a-entity>
+      <a-entity line="start:-5 1.6 -5; end:-2 4.2 -6; color:#00cc66; opacity:0.75"></a-entity>
       <!-- C → D -->
-      <a-entity line="start:-3 1.6 -7; end:1 1.6 -9; color:#ff3333; opacity:0.75"></a-entity>
+      <a-entity line="start:-2 1.6 -7; end:1 1.6 -9; color:#ff3333; opacity:0.75"></a-entity>
       <!-- B → E -->
-      <a-entity line="start:-3 4.2 -6; end:3 4.2 -7; color:#00cc66; opacity:0.75"></a-entity>
+      <a-entity line="start:-2 4.2 -6; end:3 4.2 -7; color:#00cc66; opacity:0.75"></a-entity>
       <!-- D → F -->
-      <a-entity line="start:1 1.6 -9; end:5 1.6 -7; color:#ff3333; opacity:0.75"></a-entity>
+      <a-entity line="start:1 1.6 -9; end:4 1.6 -7; color:#ff3333; opacity:0.75"></a-entity>
       <!-- E → F  (convergence) -->
-      <a-entity line="start:3 4.2 -7; end:5 1.6 -7; color:#ffaa00; opacity:0.75"></a-entity>
+      <a-entity line="start:3 4.2 -7; end:4 1.6 -7; color:#ffaa00; opacity:0.75"></a-entity>
       <!-- F → G -->
-      <a-entity line="start:5 1.6 -7; end:8 1.6 -6; color:#ff3333; opacity:0.75"></a-entity>
+      <a-entity line="start:4 1.6 -7; end:7 1.6 -6; color:#ff3333; opacity:0.75"></a-entity>
       <!-- G → H -->
-      <a-entity line="start:8 1.6 -6; end:11 1.6 -5; color:#ff3333; opacity:0.75"></a-entity>
+      <a-entity line="start:7 1.6 -6; end:9 1.6 -5; color:#ff3333; opacity:0.75"></a-entity>
       <!-- H → I -->
-      <a-entity line="start:11 1.6 -5; end:13 1.6 -4; color:#ff3333; opacity:0.75"></a-entity>
+      <a-entity line="start:9 1.6 -5; end:11 1.6 -4; color:#ff3333; opacity:0.75"></a-entity>
 
       <!-- ══════════════════════════════════════════════════
            TITLE BANNER
            Positioned high above the network, centred
       ══════════════════════════════════════════════════ -->
-      <a-entity position="3 7.5 -7">
+      <a-entity position="3 7.0 -7">
         <a-plane width="9.5" height="0.72" color="#0a1428" opacity="0.92" material="shader:flat"></a-plane>
         <a-plane width="9.5" height="0.06" color="#4a9eff" opacity="0.6" material="shader:flat" position="0 0.39 0.01"></a-plane>
         <a-plane width="9.5" height="0.06" color="#4a9eff" opacity="0.6" material="shader:flat" position="0 -0.39 0.01"></a-plane>
@@ -202,7 +202,7 @@
            NODE A — Requirements Analysis
            Position: -7  1.6  -5  |  CRITICAL  |  Float: 0
       ══════════════════════════════════════════════════ -->
-      <a-entity position="-7 1.6 -5">
+      <a-entity position="-5 1.6 -5">
         <!-- Glow ring -->
         <a-torus radius="0.75" radius-tubular="0.028" color="#ff2222" opacity="0.35"
           animation="property:rotation; to:0 360 0; loop:true; dur:7000; easing:linear"></a-torus>
@@ -219,17 +219,17 @@
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
           color="#ffffff" width="0.9" baseline="center"></a-text>
         <!-- Node label below sphere -->
-        <a-text value="Requirements Analysis" position="0 -0.9 0"
-          align="center" color="#ffaaaa" width="2.2"></a-text>
-        <a-text value="CRITICAL  ·  Float: 0" position="0 -1.22 0"
-          align="center" color="#ff4444" width="2.0"></a-text>
+        <a-text value="Requirements Analysis" position="0 -1.0 0"
+          align="center" color="#ffaaaa" width="3.5"></a-text>
+        <a-text value="CRITICAL  ·  Float: 0" position="0 -1.38 0"
+          align="center" color="#ff4444" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            NODE B — UI/UX Design
            Position: -3  4.2  -6  |  NON-CRITICAL  |  Float: 1
       ══════════════════════════════════════════════════ -->
-      <a-entity position="-3 4.2 -6">
+      <a-entity position="-2 4.2 -6">
         <a-torus radius="0.75" radius-tubular="0.028" color="#00bb55" opacity="0.35"
           animation="property:rotation; to:0 360 0; loop:true; dur:10000; easing:linear"></a-torus>
         <a-sphere radius="0.56" color="#006633"
@@ -242,17 +242,17 @@
         <a-text value="B" position="0 0 0.59" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
           color="#ffffff" width="0.9" baseline="center"></a-text>
-        <a-text value="UI/UX Design" position="0 -0.9 0"
-          align="center" color="#88ffaa" width="2.2"></a-text>
-        <a-text value="NON-CRITICAL  ·  Float: 1" position="0 -1.22 0"
-          align="center" color="#44ee88" width="2.0"></a-text>
+        <a-text value="UI/UX Design" position="0 -1.0 0"
+          align="center" color="#88ffaa" width="3.5"></a-text>
+        <a-text value="NON-CRITICAL  ·  Float: 1" position="0 -1.38 0"
+          align="center" color="#44ee88" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            NODE C — Database Schema Design
            Position: -3  1.6  -7  |  CRITICAL  |  Float: 0
       ══════════════════════════════════════════════════ -->
-      <a-entity position="-3 1.6 -7">
+      <a-entity position="-2 1.6 -7">
         <a-torus radius="0.75" radius-tubular="0.028" color="#ff2222" opacity="0.35"
           animation="property:rotation; to:0 360 0; loop:true; dur:7800; easing:linear"></a-torus>
         <a-sphere radius="0.56" color="#bb0f0f"
@@ -265,10 +265,10 @@
         <a-text value="C" position="0 0 0.59" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
           color="#ffffff" width="0.9" baseline="center"></a-text>
-        <a-text value="Database Schema Design" position="0 -0.9 0"
-          align="center" color="#ffaaaa" width="2.2"></a-text>
-        <a-text value="CRITICAL  ·  Float: 0" position="0 -1.22 0"
-          align="center" color="#ff4444" width="2.0"></a-text>
+        <a-text value="Database Schema Design" position="0 -1.0 0"
+          align="center" color="#ffaaaa" width="3.5"></a-text>
+        <a-text value="CRITICAL  ·  Float: 0" position="0 -1.38 0"
+          align="center" color="#ff4444" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
@@ -292,10 +292,10 @@
         <a-text value="D" position="0 0 0.71" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
           color="#ffffff" width="1.0" baseline="center"></a-text>
-        <a-text value="Backend API Development" position="0 -1.02 0"
-          align="center" color="#ffaaaa" width="2.4"></a-text>
-        <a-text value="CRITICAL  ·  6 Days  ·  Float: 0" position="0 -1.36 0"
-          align="center" color="#ff2222" width="2.2"></a-text>
+        <a-text value="Backend API Development" position="0 -1.12 0"
+          align="center" color="#ffaaaa" width="3.5"></a-text>
+        <a-text value="CRITICAL  ·  6 Days  ·  Float: 0" position="0 -1.52 0"
+          align="center" color="#ff2222" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
@@ -315,17 +315,17 @@
         <a-text value="E" position="0 0 0.59" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
           color="#ffffff" width="0.9" baseline="center"></a-text>
-        <a-text value="Frontend Development" position="0 -0.9 0"
-          align="center" color="#88ffaa" width="2.2"></a-text>
-        <a-text value="NON-CRITICAL  ·  Float: 1" position="0 -1.22 0"
-          align="center" color="#44ee88" width="2.0"></a-text>
+        <a-text value="Frontend Development" position="0 -1.0 0"
+          align="center" color="#88ffaa" width="3.5"></a-text>
+        <a-text value="NON-CRITICAL  ·  Float: 1" position="0 -1.38 0"
+          align="center" color="#44ee88" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            NODE F — API Integration (CONVERGENCE POINT)
            Position:  5  1.6  -7  |  CRITICAL  |  Float: 0
       ══════════════════════════════════════════════════ -->
-      <a-entity position="5 1.6 -7">
+      <a-entity position="4 1.6 -7">
         <a-torus radius="0.80" radius-tubular="0.032" color="#ff2222" opacity="0.42"
           animation="property:rotation; to:0 360 0; loop:true; dur:6800; easing:linear"></a-torus>
         <a-sphere radius="0.60" color="#bb0f0f"
@@ -338,17 +338,17 @@
         <a-text value="F" position="0 0 0.63" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
           color="#ffffff" width="0.9" baseline="center"></a-text>
-        <a-text value="API Integration" position="0 -0.94 0"
-          align="center" color="#ffaaaa" width="2.2"></a-text>
-        <a-text value="CRITICAL  ·  Convergence  ·  Float: 0" position="0 -1.26 0"
-          align="center" color="#ff4444" width="2.2"></a-text>
+        <a-text value="API Integration" position="0 -1.04 0"
+          align="center" color="#ffaaaa" width="3.5"></a-text>
+        <a-text value="CRITICAL  ·  Convergence  ·  Float: 0" position="0 -1.42 0"
+          align="center" color="#ff4444" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            NODE G — Unit Testing
            Position:  8  1.6  -6  |  CRITICAL  |  Float: 0
       ══════════════════════════════════════════════════ -->
-      <a-entity position="8 1.6 -6">
+      <a-entity position="7 1.6 -6">
         <a-torus radius="0.75" radius-tubular="0.028" color="#ff2222" opacity="0.35"
           animation="property:rotation; to:0 360 0; loop:true; dur:8500; easing:linear"></a-torus>
         <a-sphere radius="0.56" color="#bb0f0f"
@@ -361,17 +361,17 @@
         <a-text value="G" position="0 0 0.59" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
           color="#ffffff" width="0.9" baseline="center"></a-text>
-        <a-text value="Unit Testing" position="0 -0.9 0"
-          align="center" color="#ffaaaa" width="2.2"></a-text>
-        <a-text value="CRITICAL  ·  Float: 0" position="0 -1.22 0"
-          align="center" color="#ff4444" width="2.0"></a-text>
+        <a-text value="Unit Testing" position="0 -1.0 0"
+          align="center" color="#ffaaaa" width="3.5"></a-text>
+        <a-text value="CRITICAL  ·  Float: 0" position="0 -1.38 0"
+          align="center" color="#ff4444" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            NODE H — User Acceptance Testing
            Position: 11  1.6  -5  |  CRITICAL  |  Float: 0
       ══════════════════════════════════════════════════ -->
-      <a-entity position="11 1.6 -5">
+      <a-entity position="9 1.6 -5">
         <a-torus radius="0.75" radius-tubular="0.028" color="#ff2222" opacity="0.35"
           animation="property:rotation; to:0 360 0; loop:true; dur:9200; easing:linear"></a-torus>
         <a-sphere radius="0.56" color="#bb0f0f"
@@ -384,17 +384,17 @@
         <a-text value="H" position="0 0 0.59" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
           color="#ffffff" width="0.9" baseline="center"></a-text>
-        <a-text value="User Acceptance Testing" position="0 -0.9 0"
-          align="center" color="#ffaaaa" width="2.4"></a-text>
-        <a-text value="CRITICAL  ·  Float: 0" position="0 -1.22 0"
-          align="center" color="#ff4444" width="2.0"></a-text>
+        <a-text value="User Acceptance Testing" position="0 -1.0 0"
+          align="center" color="#ffaaaa" width="3.5"></a-text>
+        <a-text value="CRITICAL  ·  Float: 0" position="0 -1.38 0"
+          align="center" color="#ff4444" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            NODE I — Deployment (PROJECT END)
            Position: 13  1.6  -4  |  CRITICAL GOLD
       ══════════════════════════════════════════════════ -->
-      <a-entity position="13 1.6 -4">
+      <a-entity position="11 1.6 -4">
         <!-- Triple ring treatment for project end -->
         <a-torus radius="0.82" radius-tubular="0.034" color="#ffcc00" opacity="0.55"
           animation="property:rotation; to:0 360 0; loop:true; dur:4800; easing:linear"></a-torus>
@@ -410,10 +410,10 @@
         <a-text value="I" position="0 0 0.63" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
           color="#ffffff" width="0.9" baseline="center"></a-text>
-        <a-text value="Deployment" position="0 -0.94 0"
-          align="center" color="#ffdd88" width="2.2"></a-text>
-        <a-text value="PROJECT END  ·  Day 20" position="0 -1.26 0"
-          align="center" color="#ffdd00" width="2.2"></a-text>
+        <a-text value="Deployment" position="0 -1.04 0"
+          align="center" color="#ffdd88" width="3.5"></a-text>
+        <a-text value="PROJECT END  ·  Day 20" position="0 -1.42 0"
+          align="center" color="#ffdd00" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
@@ -435,17 +435,12 @@
           position="0 0 0.02" align="center" color="#cc88ff" width="5.0"></a-text>
       </a-entity>
 
-      <!-- ══════════════════════════════════════════════════
-           CAMERA
-           Centred on network: X = (-7+13)/2 = 3
-           Slightly elevated: Y = 2.2
-           Close enough for detail: Z = 2
-      ══════════════════════════════════════════════════ -->
+      <!-- Camera centred on compressed network: X=(-5+11)/2=3, pulled back to Z=7 -->
       <a-entity
         camera
         look-controls="pointerLockEnabled: false"
         wasd-controls="acceleration: 18"
-        position="3 2.2 2"
+        position="3 2.8 7"
       >
         <a-cursor
           fuse="true"
