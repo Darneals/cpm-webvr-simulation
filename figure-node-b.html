@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Figure 7 — Node B Interior</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: #000; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <a-scene
+      id="scene-b"
+      fog="type: exponential; color: #020a05; density: 0.05"
+      renderer="antialias: true; colorManagement: true; sortObjects: true; physicallyCorrectLights: true"
+      vr-mode-ui="enabled: false"
+      loading-screen="enabled: false"
+      screenshot="width: 3900; height: 2194"
+    >
+      <a-assets timeout="20000">
+        <img id="bg-b" src="assets/images/node-b.jpg" crossorigin="anonymous" />
+      </a-assets>
+
+      <!-- 360 immersive background -->
+      <a-sky src="#bg-b" rotation="0 -100 0"></a-sky>
+
+      <!-- Green-tinted lighting for non-critical treatment -->
+      <a-light type="ambient"     color="#112211" intensity="0.55"></a-light>
+      <a-light type="directional" color="#44ff88" intensity="0.18" position="1 4 3"></a-light>
+      <a-light type="point"       color="#00ff88" intensity="0.30" position="0 3 -1" distance="12"></a-light>
+      <a-light type="point"       color="#ffffff" intensity="0.15" position="2 1 -4" distance="10"></a-light>
+
+      <!-- ── MAIN INFORMATION PANEL ── -->
+      <a-entity position="0 2.1 -4">
+
+        <!-- Outer glow border — green -->
+        <a-plane width="4.80" height="3.60" color="#004422" opacity="0.30" material="shader:flat"></a-plane>
+
+        <!-- Main panel body -->
+        <a-plane width="4.60" height="3.44" color="#040e08" opacity="0.96" material="shader:flat" position="0 0 0.01"></a-plane>
+
+        <!-- Top accent — green double stripe -->
+        <a-plane width="4.60" height="0.20" color="#009944" opacity="1.0" material="shader:flat" position="0 1.72 0.02"></a-plane>
+        <a-plane width="4.60" height="0.07" color="#00ff88" opacity="0.50" material="shader:flat" position="0 1.48 0.02"></a-plane>
+
+        <!-- Node identifier -->
+        <a-text value="TASK B   —   NON-CRITICAL"
+          position="0 1.18 0.03" align="center" color="#44ee88"
+          font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" width="4.3"></a-text>
+
+        <!-- Task name -->
+        <a-text value="UI/UX Design"
+          position="0 0.80 0.03" align="center" color="#ffffff" width="4.3"></a-text>
+
+        <!-- Divider -->
+        <a-plane width="4.2" height="0.012" color="#224433" opacity="0.9" material="shader:flat" position="0 0.54 0.03"></a-plane>
+
+        <!-- Duration and Float -->
+        <a-text value="Duration: 4 days"
+          position="-1.2 0.28 0.03" align="center" color="#aabbcc" width="2.2"></a-text>
+        <a-text value="Float: 1 day"
+          position="1.2 0.28 0.03" align="center" color="#44ee88" width="2.2"></a-text>
+
+        <!-- Dependency -->
+        <a-text value="Depends on: Task A  (Requirements Analysis)"
+          position="0 -0.02 0.03" align="center" color="#9aabaa" width="4.2"></a-text>
+
+        <!-- Divider -->
+        <a-plane width="4.2" height="0.012" color="#224433" opacity="0.9" material="shader:flat" position="0 -0.28 0.03"></a-plane>
+
+        <!-- Float badge — green -->
+        <a-plane width="4.2" height="0.50" color="#002a14" opacity="0.95" material="shader:flat" position="0 -0.66 0.03"></a-plane>
+        <a-text value="NON-CRITICAL   —   FLOAT ABSORBS 1-DAY DELAY"
+          position="0 -0.66 0.04" align="center" color="#44ee88"
+          font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" width="4.0"></a-text>
+
+        <!-- Schedule row -->
+        <a-text value="Early Start: Day 3     |     Early Finish: Day 7"
+          position="0 -1.08 0.03" align="center" color="#6688aa" width="4.2"></a-text>
+        <a-text value="Late Start:  Day 4     |     Late Finish:  Day 8"
+          position="0 -1.32 0.03" align="center" color="#6688aa" width="4.2"></a-text>
+
+        <!-- Bottom accent -->
+        <a-plane width="4.60" height="0.20" color="#009944" opacity="0.28" material="shader:flat" position="0 -1.72 0.02"></a-plane>
+      </a-entity>
+
+      <!-- ── NAVIGATION BUTTONS ── -->
+      <a-entity position="-2.5 0.52 -4">
+        <a-plane width="2.10" height="0.58" color="#0d1a2e" opacity="0.96" material="shader:flat"></a-plane>
+        <a-plane width="2.10" height="0.04" color="#4a9eff" opacity="0.6" material="shader:flat" position="0 0.31 0.01"></a-plane>
+        <a-text value="◀  Return to Network" position="0 0 0.02" align="center" color="#4a9eff" width="1.9"></a-text>
+      </a-entity>
+
+      <a-entity position="2.5 0.52 -4">
+        <a-plane width="2.10" height="0.58" color="#002210" opacity="0.96" material="shader:flat"></a-plane>
+        <a-plane width="2.10" height="0.04" color="#00aa44" opacity="0.6" material="shader:flat" position="0 0.31 0.01"></a-plane>
+        <a-text value="Next: Task E  ▶" position="0 0 0.02" align="center" color="#44ee88" width="1.9"></a-text>
+      </a-entity>
+
+      <!-- ── CAMERA — straight-on, centred, no tilt ── -->
+      <a-entity
+        id="cam-b"
+        camera="fov: 75; near: 0.1; far: 1000"
+        look-controls="pointerLockEnabled: false"
+        wasd-controls="acceleration: 12"
+        position="0 2.1 0.5"
+        rotation="0 0 0"
+      >
+        <a-cursor fuse="false" color="#ffffff" opacity="0" material="shader:flat"></a-cursor>
+      </a-entity>
+    </a-scene>
+
+    <script>
+      window.addEventListener('message', function(e) {
+        if (e.data === 'capture') {
+          var scene = document.getElementById('scene-b');
+          if (!scene) return;
+          scene.setAttribute('screenshot', {width: 3900, height: 2194});
+          setTimeout(function() {
+            scene.components.screenshot.capture('perspective');
+          }, 400);
+        }
+      });
+    </script>
+  </body>
+</html>

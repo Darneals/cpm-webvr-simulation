@@ -9,705 +9,545 @@
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body { background: #000; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
-      /* ── CONTROL PANEL OVERLAY ── */
       #control-panel {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: linear-gradient(135deg, #05080f 0%, #0d1b3e 100%);
         display: flex; flex-direction: column; align-items: center;
         justify-content: center; z-index: 9999; padding: 30px;
       }
+      #control-panel h1 { font-size: 22px; font-weight: 700; color: #ffffff; margin-bottom: 4px; }
+      #control-panel .sub { font-size: 12px; color: #4a9eff; margin-bottom: 28px; letter-spacing: 2px; text-transform: uppercase; }
 
-      #control-panel h1 {
-        font-size: 22px; font-weight: 700; color: #ffffff;
-        margin-bottom: 6px; letter-spacing: -0.3px;
-      }
-      #control-panel .sub {
-        font-size: 13px; color: #6677aa; margin-bottom: 32px;
-        letter-spacing: 1px; text-transform: uppercase;
-      }
-
-      .figure-grid {
-        display: grid; grid-template-columns: 1fr 1fr;
-        gap: 14px; max-width: 720px; width: 100%; margin-bottom: 28px;
-      }
+      .figure-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 700px; width: 100%; margin-bottom: 24px; }
 
       .fig-btn {
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(74,158,255,0.25);
-        border-radius: 10px; padding: 16px 20px;
-        cursor: pointer; text-align: left;
-        transition: background 0.2s, border-color 0.2s;
+        background: rgba(255,255,255,0.04); border: 1px solid rgba(74,158,255,0.2);
+        border-radius: 10px; padding: 14px 18px; cursor: pointer; text-align: left;
+        transition: all 0.2s;
       }
-      .fig-btn:hover {
-        background: rgba(74,158,255,0.1);
-        border-color: rgba(74,158,255,0.6);
-      }
-      .fig-btn.active {
-        background: rgba(74,158,255,0.15);
-        border-color: #4a9eff;
-      }
-      .fig-btn .fig-num {
-        font-size: 11px; font-weight: 700; letter-spacing: 2px;
-        text-transform: uppercase; color: #4a9eff; margin-bottom: 5px;
-      }
-      .fig-btn .fig-title {
-        font-size: 14px; font-weight: 600; color: #ffffff; margin-bottom: 4px;
-      }
-      .fig-btn .fig-desc {
-        font-size: 11px; color: #6677aa; line-height: 1.5;
-      }
+      .fig-btn:hover { background: rgba(74,158,255,0.08); border-color: rgba(74,158,255,0.5); }
+      .fig-btn.active { background: rgba(74,158,255,0.12); border-color: #4a9eff; }
+      .fig-num { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #4a9eff; margin-bottom: 4px; }
+      .fig-title { font-size: 13px; font-weight: 700; color: #ffffff; margin-bottom: 3px; }
+      .fig-desc { font-size: 11px; color: #6677aa; line-height: 1.5; }
 
-      .capture-row {
-        display: flex; gap: 12px; align-items: center; margin-bottom: 20px;
+      .btn-row { display: flex; gap: 10px; margin-bottom: 20px; }
+      .action-btn {
+        padding: 13px 30px; font-size: 13px; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s;
       }
+      .btn-blue { background: linear-gradient(135deg, #1a5fd4, #4a9eff); color: #fff; box-shadow: 0 4px 18px rgba(74,158,255,0.3); }
+      .btn-blue:hover { box-shadow: 0 6px 24px rgba(74,158,255,0.5); transform: translateY(-1px); }
+      .btn-green { background: linear-gradient(135deg, #007733, #00cc55); color: #fff; box-shadow: 0 4px 18px rgba(0,204,85,0.3); display: none; }
+      .btn-green:hover { box-shadow: 0 6px 24px rgba(0,204,85,0.5); transform: translateY(-1px); }
 
-      #load-btn {
-        padding: 14px 36px; font-size: 14px; font-weight: 700;
-        letter-spacing: 1px; text-transform: uppercase;
-        background: linear-gradient(135deg, #1a5fd4, #4a9eff);
-        color: white; border: none; border-radius: 8px; cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
-        box-shadow: 0 4px 20px rgba(74,158,255,0.35);
+      .tip-box {
+        background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 8px; padding: 14px 18px; max-width: 700px; width: 100%;
       }
-      #load-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(74,158,255,0.5); }
+      .tip-box p { font-size: 11px; color: #6677aa; line-height: 1.7; }
+      .tip-box strong { color: #aabbcc; }
 
-      #capture-btn {
-        padding: 14px 36px; font-size: 14px; font-weight: 700;
-        letter-spacing: 1px; text-transform: uppercase;
-        background: linear-gradient(135deg, #007733, #00cc55);
-        color: white; border: none; border-radius: 8px; cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
-        box-shadow: 0 4px 20px rgba(0,204,85,0.35);
-        display: none;
+      #overlay-controls {
+        position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
+        display: none; z-index: 500; gap: 10px;
       }
-      #capture-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(0,204,85,0.5); }
+      .ov-btn {
+        padding: 9px 20px; font-size: 11px; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; border: none; border-radius: 6px; cursor: pointer;
+      }
+      .ov-back  { background: #1a2a4a; color: #4a9eff; }
+      .ov-cap   { background: #007733; color: #fff; }
 
-      .instructions {
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 10px; padding: 16px 20px;
-        max-width: 720px; width: 100%;
+      #status {
+        position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
+        display: none; z-index: 500;
+        background: rgba(5,8,15,0.92); border: 1px solid rgba(74,158,255,0.25);
+        border-radius: 8px; padding: 10px 20px;
+        font-size: 12px; color: #8899bb; white-space: nowrap;
       }
-      .instructions p {
-        font-size: 12px; color: #7788aa; line-height: 1.7; margin-bottom: 6px;
-      }
-      .instructions strong { color: #aabbcc; }
-      .instructions code {
-        background: rgba(74,158,255,0.1); color: #4a9eff;
-        padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 11px;
-      }
-
-      /* ── SCENE ACTIVE OVERLAY ── */
-      #scene-controls {
-        position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-        display: none; z-index: 200; pointer-events: all;
-        display: none; gap: 10px; align-items: center;
-      }
-
-      .scene-btn {
-        padding: 10px 22px; font-size: 12px; font-weight: 700;
-        letter-spacing: 1px; text-transform: uppercase;
-        border: none; border-radius: 6px; cursor: pointer;
-        transition: transform 0.15s;
-      }
-      .scene-btn:hover { transform: translateY(-1px); }
-      .scene-btn.green { background: #00aa44; color: #fff; }
-      .scene-btn.blue  { background: #1a5fd4; color: #fff; }
-      .scene-btn.red   { background: #cc1111; color: #fff; }
-
-      #status-bar {
-        position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
-        display: none; z-index: 200; pointer-events: none;
-        background: rgba(5,8,15,0.92); border: 1px solid rgba(74,158,255,0.3);
-        border-radius: 8px; padding: 10px 20px; text-align: center;
-      }
-      #status-text { font-size: 13px; color: #8899bb; }
-      #status-text span { color: #4a9eff; font-weight: 700; }
+      #status span { color: #4a9eff; font-weight: 700; }
     </style>
   </head>
   <body>
 
-    <!-- ══════════════════════════════════════
-         CONTROL PANEL
-    ══════════════════════════════════════ -->
+    <!-- CONTROL PANEL -->
     <div id="control-panel">
       <h1>CPM WebVR — Publication Figure Capture</h1>
-      <p class="sub">Select a figure → Load Scene → Capture at 3900 × 2194 px</p>
+      <p class="sub">Select figure → Load Scene → Capture at 3900 × 2194 px (600 DPI)</p>
 
       <div class="figure-grid">
-        <div class="fig-btn active" id="btn-fig4" onclick="selectFigure('fig4')">
+        <div class="fig-btn active" id="btn-fig4" onclick="sel('fig4')">
           <div class="fig-num">Figure 4</div>
           <div class="fig-title">Hub Scene — Full Network</div>
-          <div class="fig-desc">All nine nodes, dependency lines, HUD legend. Primary overview figure.</div>
+          <div class="fig-desc">All 9 nodes, dependency lines, colour legend. Network fills the frame.</div>
         </div>
-        <div class="fig-btn" id="btn-fig5" onclick="selectFigure('fig5')">
+        <div class="fig-btn" id="btn-fig5" onclick="sel('fig5')">
           <div class="fig-num">Figure 5</div>
           <div class="fig-title">Node D — Critical Task Interior</div>
-          <div class="fig-desc">Backend API Development scene. 360° background, info panel, navigation.</div>
+          <div class="fig-desc">Immersive 360° developer workspace. Info panel centred, camera straight-on.</div>
         </div>
-        <div class="fig-btn" id="btn-fig6" onclick="selectFigure('fig6')">
+        <div class="fig-btn" id="btn-fig6" onclick="sel('fig6')">
           <div class="fig-num">Figure 6</div>
           <div class="fig-title">Consequence Cascade</div>
-          <div class="fig-desc">Delay simulator mid-animation. Day counter at 21, nodes lit orange.</div>
+          <div class="fig-desc">Full cascade active. Orange nodes, Day 21 counter, green nodes absorbing.</div>
         </div>
-        <div class="fig-btn" id="btn-fig7" onclick="selectFigure('fig7')">
+        <div class="fig-btn" id="btn-fig7" onclick="sel('fig7')">
           <div class="fig-num">Figure 7</div>
           <div class="fig-title">Node B — Non-Critical Interior</div>
-          <div class="fig-desc">UI/UX Design scene. Green treatment, float absorption explanation.</div>
+          <div class="fig-desc">Immersive 360° design studio. Green treatment, float panel centred.</div>
         </div>
       </div>
 
-      <div class="capture-row">
-        <button id="load-btn" onclick="loadScene()">LOAD SELECTED SCENE</button>
-        <button id="capture-btn" onclick="captureNow()">CAPTURE FIGURE NOW</button>
+      <div class="btn-row">
+        <button class="action-btn btn-blue" onclick="loadFigure()">LOAD SCENE</button>
+        <button class="action-btn btn-green" id="cap-btn" onclick="doCapture()">CAPTURE NOW</button>
       </div>
 
-      <div class="instructions">
-        <p><strong>How to use this page:</strong></p>
-        <p>1. Select a figure from the grid above. Each button loads a different scene configuration.</p>
-        <p>2. Click <strong>LOAD SELECTED SCENE</strong> — the 3D scene renders behind this panel.</p>
-        <p>3. Click <strong>CAPTURE FIGURE NOW</strong> — the image downloads automatically at <code>3900 × 2194 px</code> (600 DPI at 6.5 inch print width).</p>
-        <p>4. For <strong>Figure 6</strong> (Consequence Cascade): after loading, click <strong>Trigger Cascade</strong> button that appears, wait 2 seconds for the animation, then capture.</p>
-        <p>5. Rename each downloaded file immediately: <code>fig4-hub-scene.png</code>, <code>fig5-node-d.png</code>, <code>fig6-cascade.png</code>, <code>fig7-node-b.png</code></p>
+      <div class="tip-box">
+        <p><strong>Workflow:</strong> Select figure → Load Scene → Wait for full render (3–4 seconds) → Capture. For Fig 4 and Fig 6, use mouse drag to fine-tune the camera angle before capturing. The scene renders at full quality behind this panel.</p>
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════
-         SCENE ACTIVE CONTROLS
-    ══════════════════════════════════════ -->
-    <div id="scene-controls">
-      <button class="scene-btn blue" onclick="showPanel()">◀ Back to Panel</button>
-      <button class="scene-btn green" onclick="captureNow()">📷 Capture Now</button>
-      <button class="scene-btn red" id="cascade-btn" style="display:none" onclick="triggerCascade()">⚡ Trigger Cascade</button>
+    <!-- OVERLAY CONTROLS (shown when scene is active) -->
+    <div id="overlay-controls">
+      <button class="ov-btn ov-back" onclick="backToPanel()">◀ Panel</button>
+      <button class="ov-btn ov-cap" onclick="doCapture()">📷 Capture</button>
     </div>
 
-    <div id="status-bar">
-      <p id="status-text">Ready</p>
-    </div>
+    <div id="status"></div>
 
-    <!-- ══════════════════════════════════════
-         A-FRAME SCENE
-         Hub layout: all nodes in wide arc
-         Camera: elevated, wide FOV 95°
-         All nodes visible in single frame
-    ══════════════════════════════════════ -->
-    <a-scene
-      id="main-scene"
-      background="color: #04060e"
-      fog="type: exponential; color: #04060e; density: 0.008"
-      renderer="antialias: true; colorManagement: true; sortObjects: true; physicallyCorrectLights: true"
-      vr-mode-ui="enabled: false"
-      loading-screen="enabled: false"
-      screenshot="width: 3900; height: 2194"
-      style="display:none"
-    >
-      <a-assets timeout="30000">
-        <img id="img-a" src="assets/images/node-a.jpg" crossorigin="anonymous" />
-        <img id="img-b" src="assets/images/node-b.jpg" crossorigin="anonymous" />
-        <img id="img-c" src="assets/images/node-c.jpg" crossorigin="anonymous" />
-        <img id="img-d" src="assets/images/node-d.jpg" crossorigin="anonymous" />
-        <img id="img-e" src="assets/images/node-e.jpg" crossorigin="anonymous" />
-        <img id="img-f" src="assets/images/node-f.jpg" crossorigin="anonymous" />
-        <img id="img-g" src="assets/images/node-g.jpg" crossorigin="anonymous" />
-        <img id="img-h" src="assets/images/node-h.jpg" crossorigin="anonymous" />
-        <img id="img-i" src="assets/images/node-i.jpg" crossorigin="anonymous" />
-        <audio id="audio-b" src="assets/audio/node-b.mp3" preload="auto"></audio>
-        <audio id="audio-d" src="assets/audio/node-d.mp3" preload="auto"></audio>
-      </a-assets>
+    <!-- ═══════════════════════════════════════════════════════
+         SCENE 1: FIG4 — HUB OVERVIEW
+         Each scene is a separate full HTML file embedded
+         in an iframe for clean isolation and proper asset loading
+    ═══════════════════════════════════════════════════════ -->
 
-      <a-light type="ambient"     color="#1a2244" intensity="0.7"></a-light>
-      <a-light type="directional" color="#4a9eff" intensity="0.3" position="0 12 5"></a-light>
-      <a-light type="point"       color="#ffffff" intensity="0.12" position="3 6 0" distance="30"></a-light>
+    <!-- We use iframes for scenes 5 and 7 (need 360 sky from real files)
+         and inline a-scene for fig4 and fig6 which are network-based -->
 
-      <!-- ════════════════════════════════
-           HUB SCENE (Fig 4)
-           Nodes arranged in a gentle arc
-           X spread: -6 to 10 (16 units)
-           Camera at X=2, Y=3, Z=5, FOV=95
-      ════════════════════════════════ -->
-
-      <!-- Dependency lines -->
-      <a-entity id="hub-lines">
-        <a-entity line="start:-6 1.6 -6; end:-3 1.6 -8; color:#ff3333; opacity:0.85"></a-entity>
-        <a-entity line="start:-6 1.6 -6; end:-2 4.0 -7; color:#00cc66; opacity:0.85"></a-entity>
-        <a-entity line="start:-3 1.6 -8; end:0 1.6 -9; color:#ff3333; opacity:0.85"></a-entity>
-        <a-entity line="start:-2 4.0 -7; end:2 4.0 -8; color:#00cc66; opacity:0.85"></a-entity>
-        <a-entity line="start:0 1.6 -9; end:4 1.6 -8; color:#ff3333; opacity:0.85"></a-entity>
-        <a-entity line="start:2 4.0 -8; end:4 1.6 -8; color:#ffaa00; opacity:0.85"></a-entity>
-        <a-entity line="start:4 1.6 -8; end:6 1.6 -7; color:#ff3333; opacity:0.85"></a-entity>
-        <a-entity line="start:6 1.6 -7; end:8 1.6 -6; color:#ff3333; opacity:0.85"></a-entity>
-        <a-entity line="start:8 1.6 -6; end:10 1.6 -5; color:#ff3333; opacity:0.85"></a-entity>
-      </a-entity>
-
-      <!-- Title banner -->
-      <a-entity id="hub-title" position="2 7.5 -8">
-        <a-plane width="11.0" height="0.80" color="#0a1428" opacity="0.94" material="shader:flat"></a-plane>
-        <a-plane width="11.0" height="0.05" color="#4a9eff" opacity="0.7" material="shader:flat" position="0 0.42 0.01"></a-plane>
-        <a-plane width="11.0" height="0.05" color="#4a9eff" opacity="0.7" material="shader:flat" position="0 -0.42 0.01"></a-plane>
-        <a-text value="SOFTWARE DEVELOPMENT PROJECT  |  CRITICAL PATH: A  C  D  F  G  H  I  =  20 DAYS"
-          position="0 0 0.02" align="center" color="#4a9eff" width="10.5"></a-text>
-      </a-entity>
-
-      <!-- NODE A -->
-      <a-entity id="hub-node-a" position="-6 1.6 -6">
-        <a-torus radius="0.75" radius-tubular="0.028" color="#ff2222" opacity="0.45"
-          animation="property:rotation; to:0 360 0; loop:true; dur:7000; easing:linear"></a-torus>
-        <a-sphere radius="0.56" color="#bb0f0f"
-          material="shader:standard; metalness:0.3; roughness:0.5; emissive:#440000; emissiveIntensity:0.5"></a-sphere>
-        <a-plane position="0 0 0.57" width="0.46" height="0.46" color="#880000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="A" position="0 0 0.59" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-        <a-text value="Requirements Analysis" position="0 -0.95 0" align="center" color="#ffaaaa" width="3.2"></a-text>
-        <a-text value="CRITICAL  Float: 0" position="0 -1.30 0" align="center" color="#ff5555" width="2.8"></a-text>
-      </a-entity>
-
-      <!-- NODE B -->
-      <a-entity id="hub-node-b" position="-2 4.0 -7">
-        <a-torus radius="0.75" radius-tubular="0.028" color="#00bb55" opacity="0.45"
-          animation="property:rotation; to:0 360 0; loop:true; dur:10000; easing:linear"></a-torus>
-        <a-sphere radius="0.56" color="#006633"
-          material="shader:standard; metalness:0.3; roughness:0.5; emissive:#002211; emissiveIntensity:0.5"></a-sphere>
-        <a-plane position="0 0 0.57" width="0.46" height="0.46" color="#004422" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="B" position="0 0 0.59" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-        <a-text value="UI/UX Design" position="0 -0.95 0" align="center" color="#88ffaa" width="3.2"></a-text>
-        <a-text value="NON-CRITICAL  Float: 1" position="0 -1.30 0" align="center" color="#44ee88" width="2.8"></a-text>
-      </a-entity>
-
-      <!-- NODE C -->
-      <a-entity id="hub-node-c" position="-3 1.6 -8">
-        <a-torus radius="0.75" radius-tubular="0.028" color="#ff2222" opacity="0.45"
-          animation="property:rotation; to:0 360 0; loop:true; dur:7800; easing:linear"></a-torus>
-        <a-sphere radius="0.56" color="#bb0f0f"
-          material="shader:standard; metalness:0.3; roughness:0.5; emissive:#440000; emissiveIntensity:0.5"></a-sphere>
-        <a-plane position="0 0 0.57" width="0.46" height="0.46" color="#880000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="C" position="0 0 0.59" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-        <a-text value="Database Schema Design" position="0 -0.95 0" align="center" color="#ffaaaa" width="3.2"></a-text>
-        <a-text value="CRITICAL  Float: 0" position="0 -1.30 0" align="center" color="#ff5555" width="2.8"></a-text>
-      </a-entity>
-
-      <!-- NODE D -->
-      <a-entity id="hub-node-d" position="0 1.6 -9">
-        <a-torus radius="0.88" radius-tubular="0.036" color="#ff0000" opacity="0.5"
-          animation="property:rotation; to:0 360 0; loop:true; dur:5500; easing:linear"></a-torus>
-        <a-torus radius="1.04" radius-tubular="0.018" color="#ff3333" opacity="0.2"
-          animation="property:rotation; to:0 -360 0; loop:true; dur:9000; easing:linear"></a-torus>
-        <a-sphere radius="0.68" color="#cc0000"
-          material="shader:standard; metalness:0.35; roughness:0.45; emissive:#550000; emissiveIntensity:0.6"></a-sphere>
-        <a-plane position="0 0 0.69" width="0.52" height="0.52" color="#770000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="D" position="0 0 0.71" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="1.0" baseline="center"></a-text>
-        <a-text value="Backend API Development" position="0 -1.05 0" align="center" color="#ffaaaa" width="3.4"></a-text>
-        <a-text value="CRITICAL  6 Days  Float: 0" position="0 -1.42 0" align="center" color="#ff2222" width="3.0"></a-text>
-      </a-entity>
-
-      <!-- NODE E -->
-      <a-entity id="hub-node-e" position="2 4.0 -8">
-        <a-torus radius="0.75" radius-tubular="0.028" color="#00bb55" opacity="0.45"
-          animation="property:rotation; to:0 360 0; loop:true; dur:11500; easing:linear"></a-torus>
-        <a-sphere radius="0.56" color="#006633"
-          material="shader:standard; metalness:0.3; roughness:0.5; emissive:#002211; emissiveIntensity:0.5"></a-sphere>
-        <a-plane position="0 0 0.57" width="0.46" height="0.46" color="#004422" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="E" position="0 0 0.59" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-        <a-text value="Frontend Development" position="0 -0.95 0" align="center" color="#88ffaa" width="3.2"></a-text>
-        <a-text value="NON-CRITICAL  Float: 1" position="0 -1.30 0" align="center" color="#44ee88" width="2.8"></a-text>
-      </a-entity>
-
-      <!-- NODE F -->
-      <a-entity id="hub-node-f" position="4 1.6 -8">
-        <a-torus radius="0.80" radius-tubular="0.032" color="#ff2222" opacity="0.48"
-          animation="property:rotation; to:0 360 0; loop:true; dur:6800; easing:linear"></a-torus>
-        <a-sphere radius="0.60" color="#bb0f0f"
-          material="shader:standard; metalness:0.3; roughness:0.5; emissive:#440000; emissiveIntensity:0.5"></a-sphere>
-        <a-plane position="0 0 0.61" width="0.48" height="0.48" color="#880000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="F" position="0 0 0.63" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-        <a-text value="API Integration" position="0 -0.98 0" align="center" color="#ffaaaa" width="3.2"></a-text>
-        <a-text value="CRITICAL  Convergence  Float: 0" position="0 -1.34 0" align="center" color="#ff5555" width="3.0"></a-text>
-      </a-entity>
-
-      <!-- NODE G -->
-      <a-entity id="hub-node-g" position="6 1.6 -7">
-        <a-torus radius="0.75" radius-tubular="0.028" color="#ff2222" opacity="0.45"
-          animation="property:rotation; to:0 360 0; loop:true; dur:8500; easing:linear"></a-torus>
-        <a-sphere radius="0.56" color="#bb0f0f"
-          material="shader:standard; metalness:0.3; roughness:0.5; emissive:#440000; emissiveIntensity:0.5"></a-sphere>
-        <a-plane position="0 0 0.57" width="0.46" height="0.46" color="#880000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="G" position="0 0 0.59" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-        <a-text value="Unit Testing" position="0 -0.95 0" align="center" color="#ffaaaa" width="3.2"></a-text>
-        <a-text value="CRITICAL  Float: 0" position="0 -1.30 0" align="center" color="#ff5555" width="2.8"></a-text>
-      </a-entity>
-
-      <!-- NODE H -->
-      <a-entity id="hub-node-h" position="8 1.6 -6">
-        <a-torus radius="0.75" radius-tubular="0.028" color="#ff2222" opacity="0.45"
-          animation="property:rotation; to:0 360 0; loop:true; dur:9200; easing:linear"></a-torus>
-        <a-sphere radius="0.56" color="#bb0f0f"
-          material="shader:standard; metalness:0.3; roughness:0.5; emissive:#440000; emissiveIntensity:0.5"></a-sphere>
-        <a-plane position="0 0 0.57" width="0.46" height="0.46" color="#880000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="H" position="0 0 0.59" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-        <a-text value="User Acceptance Testing" position="0 -0.95 0" align="center" color="#ffaaaa" width="3.4"></a-text>
-        <a-text value="CRITICAL  Float: 0" position="0 -1.30 0" align="center" color="#ff5555" width="2.8"></a-text>
-      </a-entity>
-
-      <!-- NODE I -->
-      <a-entity id="hub-node-i" position="10 1.6 -5">
-        <a-torus radius="0.82" radius-tubular="0.034" color="#ffcc00" opacity="0.55"
-          animation="property:rotation; to:0 360 0; loop:true; dur:4800; easing:linear"></a-torus>
-        <a-torus radius="0.98" radius-tubular="0.018" color="#ffaa00" opacity="0.28"
-          animation="property:rotation; to:0 -360 0; loop:true; dur:8500; easing:linear"></a-torus>
-        <a-sphere radius="0.60" color="#cc8800"
-          material="shader:standard; metalness:0.5; roughness:0.3; emissive:#664400; emissiveIntensity:0.65"></a-sphere>
-        <a-plane position="0 0 0.61" width="0.48" height="0.48" color="#885500" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="I" position="0 0 0.63" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-        <a-text value="Deployment" position="0 -0.98 0" align="center" color="#ffdd88" width="3.2"></a-text>
-        <a-text value="PROJECT END  Day 20" position="0 -1.34 0" align="center" color="#ffdd00" width="2.8"></a-text>
-      </a-entity>
-
-      <!-- HUD LEGEND (visible in hub figure) -->
-      <a-entity id="hub-hud" position="2 -0.6 -7">
-        <a-plane width="7.5" height="0.55" color="#080e1e" opacity="0.90" material="shader:flat"></a-plane>
-        <a-plane width="7.5" height="0.03" color="#4a9eff" opacity="0.5" material="shader:flat" position="0 0.29 0.01"></a-plane>
-        <a-text value="RED = Critical Path (zero float)     GREEN = Non-Critical (has float)     GOLD = Project End Node     AMBER = Convergence Line"
-          position="0 0 0.02" align="center" color="#8899bb" width="7.2"></a-text>
-      </a-entity>
-
-      <!-- ════════════════════════════════
-           NODE D INTERIOR SCENE (Fig 5)
-           Hidden by default, shown for Fig 5
-      ════════════════════════════════ -->
-      <a-entity id="scene-node-d" visible="false">
-        <a-sky src="#img-d" rotation="0 -90 0"></a-sky>
-        <a-light type="ambient" color="#ffcccc" intensity="0.75"></a-light>
-
-        <!-- Main info panel -->
-        <a-entity position="0 2.2 -3.8">
-          <a-plane width="4.6" height="3.4" color="#04060f" opacity="0.93" material="shader:flat"></a-plane>
-          <a-plane width="4.6" height="0.18" color="#dd0000" opacity="1" material="shader:flat" position="0 1.61 0.01"></a-plane>
-          <a-plane width="4.6" height="0.06" color="#ff6600" opacity="0.7" material="shader:flat" position="0 1.38 0.01"></a-plane>
-          <a-text value="TASK D  —  LONGEST CRITICAL TASK" position="0 1.12 0.02" align="center" color="#ff2222" width="4.2" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
-          <a-text value="Backend API Development" position="0 0.76 0.02" align="center" color="#ffffff" width="4.2"></a-text>
-          <a-plane width="4.0" height="0.01" color="#334455" opacity="0.8" material="shader:flat" position="0 0.52 0.02"></a-plane>
-          <a-text value="Duration: 6 days" position="-1.1 0.26 0.02" align="center" color="#ffaa00" width="2.0"></a-text>
-          <a-text value="Float: 0 days" position="1.1 0.26 0.02" align="center" color="#ff4444" width="2.0"></a-text>
-          <a-text value="Depends on: Task C (Database Schema Design)" position="0 -0.02 0.02" align="center" color="#aabbcc" width="4.0"></a-text>
-          <a-plane width="4.0" height="0.01" color="#334455" opacity="0.8" material="shader:flat" position="0 -0.26 0.02"></a-plane>
-          <a-plane width="4.0" height="0.44" color="#440000" opacity="0.9" material="shader:flat" position="0 -0.60 0.02"></a-plane>
-          <a-text value="CRITICAL PATH — HIGHEST PROJECT RISK" position="0 -0.60 0.03" align="center" color="#ff2222" width="3.8"></a-text>
-          <a-text value="Early Start: Day 5   |   Early Finish: Day 11" position="0 -1.02 0.02" align="center" color="#7788aa" width="3.8"></a-text>
-          <a-text value="Late Start:  Day 5   |   Late Finish:  Day 11" position="0 -1.24 0.02" align="center" color="#7788aa" width="3.8"></a-text>
-          <a-plane width="4.6" height="0.18" color="#dd0000" opacity="0.28" material="shader:flat" position="0 -1.61 0.01"></a-plane>
-        </a-entity>
-
-        <!-- Navigation buttons -->
-        <a-entity position="-2.4 0.5 -3.8">
-          <a-plane width="2.0" height="0.55" color="#1a2a4a" opacity="0.95" material="shader:flat"></a-plane>
-          <a-text value="Return to Network" position="0 0 0.02" align="center" color="#4a9eff" width="1.8"></a-text>
-        </a-entity>
-        <a-entity position="2.4 0.5 -3.8">
-          <a-plane width="2.0" height="0.55" color="#220000" opacity="0.95" material="shader:flat"></a-plane>
-          <a-text value="Next: Task F" position="0 0 0.02" align="center" color="#ff6666" width="1.8"></a-text>
-        </a-entity>
-      </a-entity>
-
-      <!-- ════════════════════════════════
-           NODE B INTERIOR SCENE (Fig 7)
-           Hidden by default, shown for Fig 7
-      ════════════════════════════════ -->
-      <a-entity id="scene-node-b" visible="false">
-        <a-sky src="#img-b" rotation="0 -90 0"></a-sky>
-        <a-light type="ambient" color="#ddffee" intensity="0.75"></a-light>
-
-        <a-entity position="0 2.2 -3.8">
-          <a-plane width="4.4" height="3.2" color="#04060f" opacity="0.93" material="shader:flat"></a-plane>
-          <a-plane width="4.4" height="0.18" color="#008844" opacity="1" material="shader:flat" position="0 1.51 0.01"></a-plane>
-          <a-text value="TASK B  —  NON-CRITICAL" position="0 1.24 0.02" align="center" color="#44ee88" width="4.0" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
-          <a-text value="UI/UX Design" position="0 0.88 0.02" align="center" color="#ffffff" width="4.0"></a-text>
-          <a-plane width="3.8" height="0.01" color="#334455" opacity="0.8" material="shader:flat" position="0 0.62 0.02"></a-plane>
-          <a-text value="Duration: 4 days" position="-1.1 0.36 0.02" align="center" color="#aabbcc" width="1.9"></a-text>
-          <a-text value="Float: 1 day" position="1.1 0.36 0.02" align="center" color="#44ee88" width="1.9"></a-text>
-          <a-text value="Depends on: Task A (Requirements Analysis)" position="0 0.08 0.02" align="center" color="#aabbcc" width="3.8"></a-text>
-          <a-plane width="3.8" height="0.01" color="#334455" opacity="0.8" material="shader:flat" position="0 -0.16 0.02"></a-plane>
-          <a-plane width="3.8" height="0.44" color="#003322" opacity="0.9" material="shader:flat" position="0 -0.52 0.02"></a-plane>
-          <a-text value="NON-CRITICAL — FLOAT ABSORBS 1-DAY DELAY" position="0 -0.52 0.03" align="center" color="#44ee88" width="3.6"></a-text>
-          <a-text value="Early Start: Day 3   |   Early Finish: Day 7" position="0 -0.92 0.02" align="center" color="#7788aa" width="3.8"></a-text>
-          <a-text value="Late Start:  Day 4   |   Late Finish:  Day 8" position="0 -1.14 0.02" align="center" color="#7788aa" width="3.8"></a-text>
-          <a-plane width="4.4" height="0.18" color="#008844" opacity="0.28" material="shader:flat" position="0 -1.51 0.01"></a-plane>
-        </a-entity>
-
-        <a-entity position="-2.4 0.5 -3.8">
-          <a-plane width="2.0" height="0.55" color="#1a2a4a" opacity="0.95" material="shader:flat"></a-plane>
-          <a-text value="Return to Network" position="0 0 0.02" align="center" color="#4a9eff" width="1.8"></a-text>
-        </a-entity>
-        <a-entity position="2.4 0.5 -3.8">
-          <a-plane width="2.0" height="0.55" color="#002211" opacity="0.95" material="shader:flat"></a-plane>
-          <a-text value="Next: Task E" position="0 0 0.02" align="center" color="#44ee88" width="1.8"></a-text>
-        </a-entity>
-      </a-entity>
-
-      <!-- ════════════════════════════════
-           CONSEQUENCE SCENE (Fig 6)
-           Hidden by default
-      ════════════════════════════════ -->
-      <a-entity id="scene-consequence" visible="false">
-        <!-- Same network but with cascade overlay capability -->
-        <a-entity line="start:-6 1.6 -6; end:-3 1.6 -8; color:#ff3333; opacity:0.85"></a-entity>
-        <a-entity line="start:-6 1.6 -6; end:-2 4.0 -7; color:#00cc66; opacity:0.85"></a-entity>
-        <a-entity line="start:-3 1.6 -8; end:0 1.6 -9; color:#ff3333; opacity:0.85"></a-entity>
-        <a-entity line="start:-2 4.0 -7; end:2 4.0 -8; color:#00cc66; opacity:0.85"></a-entity>
-        <a-entity line="start:0 1.6 -9; end:4 1.6 -8; color:#ff3333; opacity:0.85"></a-entity>
-        <a-entity line="start:2 4.0 -8; end:4 1.6 -8; color:#ffaa00; opacity:0.85"></a-entity>
-        <a-entity line="start:4 1.6 -8; end:6 1.6 -7; color:#ff3333; opacity:0.85"></a-entity>
-        <a-entity line="start:6 1.6 -7; end:8 1.6 -6; color:#ff3333; opacity:0.85"></a-entity>
-        <a-entity line="start:8 1.6 -6; end:10 1.6 -5; color:#ff3333; opacity:0.85"></a-entity>
-
-        <!-- Cascade title -->
-        <a-entity position="2 7.5 -8">
-          <a-plane width="11.0" height="0.80" color="#0d0522" opacity="0.94" material="shader:flat"></a-plane>
-          <a-plane width="11.0" height="0.05" color="#cc66ff" opacity="0.6" material="shader:flat" position="0 0.42 0.01"></a-plane>
-          <a-text value="CONSEQUENCE SIMULATOR  |  Task A delayed 1 day  |  Project End: Day 21"
-            position="0 0 0.02" align="center" color="#cc66ff" width="10.5"></a-text>
-        </a-entity>
-
-        <!-- Cascade nodes — all lit orange to show delay propagation -->
-        <!-- Node A — triggered (white flash) -->
-        <a-entity position="-6 1.6 -6">
-          <a-torus radius="0.75" radius-tubular="0.028" color="#ffffff" opacity="0.8"
-            animation="property:rotation; to:0 360 0; loop:true; dur:2000; easing:linear"></a-torus>
-          <a-sphere id="csq-a" radius="0.56" color="#ffffff"
-            material="shader:standard; emissive:#ffffff; emissiveIntensity:1.0"></a-sphere>
-          <a-plane position="0 0 0.57" width="0.46" height="0.46" color="#888800" opacity="1" material="shader:flat"></a-plane>
-          <a-text value="A" position="0 0 0.59" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-          <a-text value="DELAYED +1 DAY" position="0 -0.95 0" align="center" color="#ffff00" width="3.2"></a-text>
-        </a-entity>
-        <!-- Node B — unaffected green -->
-        <a-entity position="-2 4.0 -7">
-          <a-torus radius="0.75" radius-tubular="0.028" color="#00bb55" opacity="0.45"
-            animation="property:rotation; to:0 360 0; loop:true; dur:10000; easing:linear"></a-torus>
-          <a-sphere radius="0.56" color="#006633" material="shader:standard; emissive:#002211; emissiveIntensity:0.5"></a-sphere>
-          <a-plane position="0 0 0.57" width="0.46" height="0.46" color="#004422" opacity="1" material="shader:flat"></a-plane>
-          <a-text value="B" position="0 0 0.59" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-          <a-text value="FLOAT ABSORBS" position="0 -0.95 0" align="center" color="#44ee88" width="3.2"></a-text>
-        </a-entity>
-        <!-- Nodes C D F G H I — all cascaded orange -->
-        <a-entity position="-3 1.6 -8">
-          <a-torus radius="0.75" radius-tubular="0.028" color="#ff6600" opacity="0.7"
-            animation="property:rotation; to:0 360 0; loop:true; dur:2200; easing:linear"></a-torus>
-          <a-sphere radius="0.56" color="#cc4400" material="shader:standard; emissive:#882200; emissiveIntensity:0.8"></a-sphere>
-          <a-plane position="0 0 0.57" width="0.46" height="0.46" color="#882200" opacity="1" material="shader:flat"></a-plane>
-          <a-text value="C" position="0 0 0.59" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-          <a-text value="CASCADED" position="0 -0.95 0" align="center" color="#ff9900" width="3.2"></a-text>
-        </a-entity>
-        <a-entity position="0 1.6 -9">
-          <a-torus radius="0.88" radius-tubular="0.036" color="#ff6600" opacity="0.7"
-            animation="property:rotation; to:0 360 0; loop:true; dur:2000; easing:linear"></a-torus>
-          <a-sphere radius="0.68" color="#cc4400" material="shader:standard; emissive:#882200; emissiveIntensity:0.8"></a-sphere>
-          <a-plane position="0 0 0.69" width="0.52" height="0.52" color="#882200" opacity="1" material="shader:flat"></a-plane>
-          <a-text value="D" position="0 0 0.71" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="1.0" baseline="center"></a-text>
-          <a-text value="CASCADED" position="0 -1.05 0" align="center" color="#ff9900" width="3.4"></a-text>
-        </a-entity>
-        <a-entity position="2 4.0 -8">
-          <a-torus radius="0.75" radius-tubular="0.028" color="#00bb55" opacity="0.45"
-            animation="property:rotation; to:0 360 0; loop:true; dur:11500; easing:linear"></a-torus>
-          <a-sphere radius="0.56" color="#006633" material="shader:standard; emissive:#002211; emissiveIntensity:0.5"></a-sphere>
-          <a-plane position="0 0 0.57" width="0.46" height="0.46" color="#004422" opacity="1" material="shader:flat"></a-plane>
-          <a-text value="E" position="0 0 0.59" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-          <a-text value="FLOAT ABSORBS" position="0 -0.95 0" align="center" color="#44ee88" width="3.2"></a-text>
-        </a-entity>
-        <a-entity position="4 1.6 -8">
-          <a-torus radius="0.80" radius-tubular="0.032" color="#ff6600" opacity="0.7"
-            animation="property:rotation; to:0 360 0; loop:true; dur:2400; easing:linear"></a-torus>
-          <a-sphere radius="0.60" color="#cc4400" material="shader:standard; emissive:#882200; emissiveIntensity:0.8"></a-sphere>
-          <a-plane position="0 0 0.61" width="0.48" height="0.48" color="#882200" opacity="1" material="shader:flat"></a-plane>
-          <a-text value="F" position="0 0 0.63" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-          <a-text value="CASCADED" position="0 -0.98 0" align="center" color="#ff9900" width="3.2"></a-text>
-        </a-entity>
-        <a-entity position="6 1.6 -7">
-          <a-torus radius="0.75" radius-tubular="0.028" color="#ff6600" opacity="0.7"
-            animation="property:rotation; to:0 360 0; loop:true; dur:2600; easing:linear"></a-torus>
-          <a-sphere radius="0.56" color="#cc4400" material="shader:standard; emissive:#882200; emissiveIntensity:0.8"></a-sphere>
-          <a-plane position="0 0 0.57" width="0.46" height="0.46" color="#882200" opacity="1" material="shader:flat"></a-plane>
-          <a-text value="G" position="0 0 0.59" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-          <a-text value="CASCADED" position="0 -0.95 0" align="center" color="#ff9900" width="3.2"></a-text>
-        </a-entity>
-        <a-entity position="8 1.6 -6">
-          <a-torus radius="0.75" radius-tubular="0.028" color="#ff6600" opacity="0.7"
-            animation="property:rotation; to:0 360 0; loop:true; dur:2800; easing:linear"></a-torus>
-          <a-sphere radius="0.56" color="#cc4400" material="shader:standard; emissive:#882200; emissiveIntensity:0.8"></a-sphere>
-          <a-plane position="0 0 0.57" width="0.46" height="0.46" color="#882200" opacity="1" material="shader:flat"></a-plane>
-          <a-text value="H" position="0 0 0.59" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-          <a-text value="CASCADED" position="0 -0.95 0" align="center" color="#ff9900" width="3.2"></a-text>
-        </a-entity>
-        <a-entity position="10 1.6 -5">
-          <a-torus radius="0.82" radius-tubular="0.034" color="#ff6600" opacity="0.7"
-            animation="property:rotation; to:0 360 0; loop:true; dur:3000; easing:linear"></a-torus>
-          <a-sphere radius="0.60" color="#cc4400" material="shader:standard; emissive:#882200; emissiveIntensity:0.8"></a-sphere>
-          <a-plane position="0 0 0.61" width="0.48" height="0.48" color="#882200" opacity="1" material="shader:flat"></a-plane>
-          <a-text value="I" position="0 0 0.63" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.9" baseline="center"></a-text>
-          <a-text value="PROJECT END: DAY 21" position="0 -0.98 0" align="center" color="#ff4400" width="3.2"></a-text>
-        </a-entity>
-
-        <!-- Day counter panel -->
-        <a-entity position="2 5.8 -7">
-          <a-plane width="5.0" height="0.80" color="#1a0005" opacity="0.95" material="shader:flat"></a-plane>
-          <a-plane width="5.0" height="0.05" color="#ff3333" opacity="0.7" material="shader:flat" position="0 0.42 0.01"></a-plane>
-          <a-text value="PROJECT END DATE:  DAY 21  (+1 DAY DELAY)" position="0 0 0.02" align="center" color="#ff4444" width="4.7"></a-text>
-        </a-entity>
-      </a-entity>
-
-      <!-- ── CAMERA — wide FOV, centred on network ── -->
-      <a-entity id="main-camera"
-        camera="fov: 95; near: 0.1; far: 1000"
-        look-controls="pointerLockEnabled: false; enabled: true"
-        wasd-controls="acceleration: 18"
-        position="2 3.2 5"
+    <!-- Fig 4 scene — hub overview -->
+    <div id="scene-fig4" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:100;">
+      <a-scene
+        id="asc-fig4"
+        background="color: #03050c"
+        fog="type: exponential; color: #03050c; density: 0.009"
+        renderer="antialias: true; colorManagement: true; sortObjects: true"
+        vr-mode-ui="enabled: false"
+        loading-screen="enabled: false"
+        screenshot="width: 3900; height: 2194"
+        embedded
       >
-        <a-cursor
-          fuse="false"
-          color="#ffffff" opacity="0.0"
-          material="shader:flat; color:#ffffff"
-        ></a-cursor>
-      </a-entity>
+        <a-light type="ambient" color="#1a2244" intensity="0.75"></a-light>
+        <a-light type="directional" color="#4a9eff" intensity="0.35" position="0 12 5"></a-light>
+        <a-light type="point" color="#aaccff" intensity="0.15" position="2 5 0" distance="25"></a-light>
 
-    </a-scene>
+        <!-- Dependency lines — carefully spaced for visual clarity -->
+        <a-entity line="start:-5.5 1.6 -6; end:-2.5 1.6 -8; color:#ff3333; opacity:0.9"></a-entity>
+        <a-entity line="start:-5.5 1.6 -6; end:-1.5 4.2 -7; color:#00cc66; opacity:0.9"></a-entity>
+        <a-entity line="start:-2.5 1.6 -8; end:0.5 1.6 -9.5; color:#ff3333; opacity:0.9"></a-entity>
+        <a-entity line="start:-1.5 4.2 -7; end:2.5 4.2 -8; color:#00cc66; opacity:0.9"></a-entity>
+        <a-entity line="start:0.5 1.6 -9.5; end:3.5 1.6 -8; color:#ff3333; opacity:0.9"></a-entity>
+        <a-entity line="start:2.5 4.2 -8; end:3.5 1.6 -8; color:#ffaa00; opacity:0.9"></a-entity>
+        <a-entity line="start:3.5 1.6 -8; end:5.5 1.6 -7; color:#ff3333; opacity:0.9"></a-entity>
+        <a-entity line="start:5.5 1.6 -7; end:7.5 1.6 -6; color:#ff3333; opacity:0.9"></a-entity>
+        <a-entity line="start:7.5 1.6 -6; end:9.5 1.6 -5; color:#ff3333; opacity:0.9"></a-entity>
 
-    <!-- ══════════════════════════════════════
-         JAVASCRIPT
-    ══════════════════════════════════════ -->
+        <!-- Title -->
+        <a-entity position="2 7.8 -8.5">
+          <a-plane width="10.5" height="0.78" color="#080e1e" opacity="0.95" material="shader:flat"></a-plane>
+          <a-plane width="10.5" height="0.05" color="#4a9eff" opacity="0.8" material="shader:flat" position="0 0.415 0.01"></a-plane>
+          <a-plane width="10.5" height="0.05" color="#4a9eff" opacity="0.8" material="shader:flat" position="0 -0.415 0.01"></a-plane>
+          <a-text value="SOFTWARE DEVELOPMENT PROJECT   |   CRITICAL PATH: A  C  D  F  G  H  I  =  20 DAYS"
+            position="0 0 0.02" align="center" color="#4a9eff" width="10.0"></a-text>
+        </a-entity>
+
+        <!-- NODE A: -5.5  1.6  -6 -->
+        <a-entity position="-5.5 1.6 -6">
+          <a-torus radius="0.78" radius-tubular="0.030" color="#ff2222" opacity="0.5"
+            animation="property:rotation; to:0 360 0; loop:true; dur:7000; easing:linear"></a-torus>
+          <a-sphere radius="0.58" color="#cc1111"
+            material="shader:standard; metalness:0.3; roughness:0.5; emissive:#550000; emissiveIntensity:0.55"
+            animation="property:scale; to:1.07 1.07 1.07; dir:alternate; loop:true; dur:1800; easing:easeInOutSine">
+          </a-sphere>
+          <a-plane position="0 0 0.59" width="0.48" height="0.48" color="#880000" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="A" position="0 0 0.61" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.95" baseline="center"></a-text>
+          <a-text value="Requirements Analysis" position="0 -0.98 0" align="center" color="#ffbbbb" width="3.4"></a-text>
+          <a-text value="CRITICAL   Float: 0" position="0 -1.35 0" align="center" color="#ff4444" width="3.0"></a-text>
+        </a-entity>
+
+        <!-- NODE B: -1.5  4.2  -7 -->
+        <a-entity position="-1.5 4.2 -7">
+          <a-torus radius="0.78" radius-tubular="0.030" color="#00cc55" opacity="0.5"
+            animation="property:rotation; to:0 360 0; loop:true; dur:10000; easing:linear"></a-torus>
+          <a-sphere radius="0.58" color="#007733"
+            material="shader:standard; metalness:0.3; roughness:0.5; emissive:#003322; emissiveIntensity:0.55"
+            animation="property:scale; to:1.07 1.07 1.07; dir:alternate; loop:true; dur:2200; easing:easeInOutSine">
+          </a-sphere>
+          <a-plane position="0 0 0.59" width="0.48" height="0.48" color="#004422" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="B" position="0 0 0.61" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.95" baseline="center"></a-text>
+          <a-text value="UI/UX Design" position="0 -0.98 0" align="center" color="#88ffaa" width="3.4"></a-text>
+          <a-text value="NON-CRITICAL   Float: 1" position="0 -1.35 0" align="center" color="#44ee88" width="3.0"></a-text>
+        </a-entity>
+
+        <!-- NODE C: -2.5  1.6  -8 -->
+        <a-entity position="-2.5 1.6 -8">
+          <a-torus radius="0.78" radius-tubular="0.030" color="#ff2222" opacity="0.5"
+            animation="property:rotation; to:0 360 0; loop:true; dur:7800; easing:linear"></a-torus>
+          <a-sphere radius="0.58" color="#cc1111"
+            material="shader:standard; metalness:0.3; roughness:0.5; emissive:#550000; emissiveIntensity:0.55"
+            animation="property:scale; to:1.07 1.07 1.07; dir:alternate; loop:true; dur:1600; easing:easeInOutSine">
+          </a-sphere>
+          <a-plane position="0 0 0.59" width="0.48" height="0.48" color="#880000" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="C" position="0 0 0.61" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.95" baseline="center"></a-text>
+          <a-text value="Database Schema Design" position="0 -0.98 0" align="center" color="#ffbbbb" width="3.4"></a-text>
+          <a-text value="CRITICAL   Float: 0" position="0 -1.35 0" align="center" color="#ff4444" width="3.0"></a-text>
+        </a-entity>
+
+        <!-- NODE D: 0.5  1.6  -9.5  (deepest, largest) -->
+        <a-entity position="0.5 1.6 -9.5">
+          <a-torus radius="0.90" radius-tubular="0.037" color="#ff0000" opacity="0.55"
+            animation="property:rotation; to:0 360 0; loop:true; dur:5500; easing:linear"></a-torus>
+          <a-torus radius="1.08" radius-tubular="0.018" color="#ff4400" opacity="0.22"
+            animation="property:rotation; to:0 -360 0; loop:true; dur:9000; easing:linear"></a-torus>
+          <a-sphere radius="0.70" color="#dd0000"
+            material="shader:standard; metalness:0.35; roughness:0.45; emissive:#660000; emissiveIntensity:0.65"
+            animation="property:scale; to:1.09 1.09 1.09; dir:alternate; loop:true; dur:1400; easing:easeInOutSine">
+          </a-sphere>
+          <a-plane position="0 0 0.71" width="0.54" height="0.54" color="#770000" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="D" position="0 0 0.73" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="1.05" baseline="center"></a-text>
+          <a-text value="Backend API Development" position="0 -1.08 0" align="center" color="#ffbbbb" width="3.6"></a-text>
+          <a-text value="CRITICAL   6 Days   Float: 0" position="0 -1.46 0" align="center" color="#ff2222" width="3.2"></a-text>
+        </a-entity>
+
+        <!-- NODE E: 2.5  4.2  -8 -->
+        <a-entity position="2.5 4.2 -8">
+          <a-torus radius="0.78" radius-tubular="0.030" color="#00cc55" opacity="0.5"
+            animation="property:rotation; to:0 360 0; loop:true; dur:11500; easing:linear"></a-torus>
+          <a-sphere radius="0.58" color="#007733"
+            material="shader:standard; metalness:0.3; roughness:0.5; emissive:#003322; emissiveIntensity:0.55"
+            animation="property:scale; to:1.07 1.07 1.07; dir:alternate; loop:true; dur:2400; easing:easeInOutSine">
+          </a-sphere>
+          <a-plane position="0 0 0.59" width="0.48" height="0.48" color="#004422" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="E" position="0 0 0.61" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.95" baseline="center"></a-text>
+          <a-text value="Frontend Development" position="0 -0.98 0" align="center" color="#88ffaa" width="3.4"></a-text>
+          <a-text value="NON-CRITICAL   Float: 1" position="0 -1.35 0" align="center" color="#44ee88" width="3.0"></a-text>
+        </a-entity>
+
+        <!-- NODE F: 3.5  1.6  -8 -->
+        <a-entity position="3.5 1.6 -8">
+          <a-torus radius="0.82" radius-tubular="0.033" color="#ff2222" opacity="0.52"
+            animation="property:rotation; to:0 360 0; loop:true; dur:6800; easing:linear"></a-torus>
+          <a-sphere radius="0.62" color="#cc1111"
+            material="shader:standard; metalness:0.3; roughness:0.5; emissive:#550000; emissiveIntensity:0.55"
+            animation="property:scale; to:1.08 1.08 1.08; dir:alternate; loop:true; dur:1700; easing:easeInOutSine">
+          </a-sphere>
+          <a-plane position="0 0 0.63" width="0.50" height="0.50" color="#880000" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="F" position="0 0 0.65" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.95" baseline="center"></a-text>
+          <a-text value="API Integration" position="0 -1.02 0" align="center" color="#ffbbbb" width="3.4"></a-text>
+          <a-text value="CRITICAL   Convergence   Float: 0" position="0 -1.39 0" align="center" color="#ff4444" width="3.2"></a-text>
+        </a-entity>
+
+        <!-- NODE G: 5.5  1.6  -7 -->
+        <a-entity position="5.5 1.6 -7">
+          <a-torus radius="0.78" radius-tubular="0.030" color="#ff2222" opacity="0.5"
+            animation="property:rotation; to:0 360 0; loop:true; dur:8500; easing:linear"></a-torus>
+          <a-sphere radius="0.58" color="#cc1111"
+            material="shader:standard; metalness:0.3; roughness:0.5; emissive:#550000; emissiveIntensity:0.55"
+            animation="property:scale; to:1.07 1.07 1.07; dir:alternate; loop:true; dur:1900; easing:easeInOutSine">
+          </a-sphere>
+          <a-plane position="0 0 0.59" width="0.48" height="0.48" color="#880000" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="G" position="0 0 0.61" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.95" baseline="center"></a-text>
+          <a-text value="Unit Testing" position="0 -0.98 0" align="center" color="#ffbbbb" width="3.4"></a-text>
+          <a-text value="CRITICAL   Float: 0" position="0 -1.35 0" align="center" color="#ff4444" width="3.0"></a-text>
+        </a-entity>
+
+        <!-- NODE H: 7.5  1.6  -6 -->
+        <a-entity position="7.5 1.6 -6">
+          <a-torus radius="0.78" radius-tubular="0.030" color="#ff2222" opacity="0.5"
+            animation="property:rotation; to:0 360 0; loop:true; dur:9200; easing:linear"></a-torus>
+          <a-sphere radius="0.58" color="#cc1111"
+            material="shader:standard; metalness:0.3; roughness:0.5; emissive:#550000; emissiveIntensity:0.55"
+            animation="property:scale; to:1.07 1.07 1.07; dir:alternate; loop:true; dur:2000; easing:easeInOutSine">
+          </a-sphere>
+          <a-plane position="0 0 0.59" width="0.48" height="0.48" color="#880000" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="H" position="0 0 0.61" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.95" baseline="center"></a-text>
+          <a-text value="User Acceptance Testing" position="0 -0.98 0" align="center" color="#ffbbbb" width="3.6"></a-text>
+          <a-text value="CRITICAL   Float: 0" position="0 -1.35 0" align="center" color="#ff4444" width="3.0"></a-text>
+        </a-entity>
+
+        <!-- NODE I: 9.5  1.6  -5  (gold, project end) -->
+        <a-entity position="9.5 1.6 -5">
+          <a-torus radius="0.84" radius-tubular="0.035" color="#ffcc00" opacity="0.60"
+            animation="property:rotation; to:0 360 0; loop:true; dur:4800; easing:linear"></a-torus>
+          <a-torus radius="1.00" radius-tubular="0.018" color="#ffaa00" opacity="0.30"
+            animation="property:rotation; to:0 -360 0; loop:true; dur:8500; easing:linear"></a-torus>
+          <a-sphere radius="0.62" color="#cc8800"
+            material="shader:standard; metalness:0.5; roughness:0.3; emissive:#664400; emissiveIntensity:0.70"
+            animation="property:scale; to:1.10 1.10 1.10; dir:alternate; loop:true; dur:1500; easing:easeInOutSine">
+          </a-sphere>
+          <a-plane position="0 0 0.63" width="0.50" height="0.50" color="#885500" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="I" position="0 0 0.65" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.95" baseline="center"></a-text>
+          <a-text value="Deployment" position="0 -1.02 0" align="center" color="#ffdd88" width="3.4"></a-text>
+          <a-text value="PROJECT END   Day 20" position="0 -1.39 0" align="center" color="#ffdd00" width="3.0"></a-text>
+        </a-entity>
+
+        <!-- Legend bar — tight to network bottom -->
+        <a-entity position="2 -0.5 -7.5">
+          <a-plane width="12.5" height="0.60" color="#060d1a" opacity="0.95" material="shader:flat"></a-plane>
+          <a-plane width="12.5" height="0.04" color="#4a9eff" opacity="0.5" material="shader:flat" position="0 0.32 0.01"></a-plane>
+          <a-text value="RED = Critical Path (zero float)          GREEN = Non-Critical (float available)          GOLD = Project End Node          AMBER = Convergence"
+            position="0 0 0.02" align="center" color="#8899bb" width="12.0"></a-text>
+        </a-entity>
+
+        <!-- CAMERA: centred X=2, elevated Y=3.5, Z=5 — tight enough to fill frame -->
+        <a-entity id="cam4"
+          camera="fov: 88; near: 0.1; far: 1000"
+          look-controls="pointerLockEnabled: false"
+          wasd-controls="acceleration: 16"
+          position="2 3.5 5">
+          <a-cursor fuse="false" color="#ffffff" opacity="0" material="shader:flat"></a-cursor>
+        </a-entity>
+      </a-scene>
+    </div>
+
+    <!-- Fig 5 scene — Node D interior using iframe for 360 sky -->
+    <div id="scene-fig5" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:100;">
+      <iframe id="iframe-fig5" src="figure-node-d.html" style="width:100%; height:100%; border:none;"></iframe>
+    </div>
+
+    <!-- Fig 6 scene — consequence cascade -->
+    <div id="scene-fig6" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:100;">
+      <a-scene
+        id="asc-fig6"
+        background="color: #03050c"
+        fog="type: exponential; color: #03050c; density: 0.009"
+        renderer="antialias: true; colorManagement: true; sortObjects: true"
+        vr-mode-ui="enabled: false"
+        loading-screen="enabled: false"
+        screenshot="width: 3900; height: 2194"
+        embedded
+      >
+        <a-light type="ambient" color="#1a0a0a" intensity="0.65"></a-light>
+        <a-light type="directional" color="#ff4422" intensity="0.25" position="0 12 5"></a-light>
+        <a-light type="point" color="#ff6600" intensity="0.2" position="2 5 0" distance="28"></a-light>
+
+        <!-- Dependency lines — orange tint to show cascade state -->
+        <a-entity line="start:-5.5 1.6 -6; end:-2.5 1.6 -8; color:#ff5500; opacity:0.9"></a-entity>
+        <a-entity line="start:-5.5 1.6 -6; end:-1.5 4.2 -7; color:#00cc66; opacity:0.9"></a-entity>
+        <a-entity line="start:-2.5 1.6 -8; end:0.5 1.6 -9.5; color:#ff5500; opacity:0.9"></a-entity>
+        <a-entity line="start:-1.5 4.2 -7; end:2.5 4.2 -8; color:#00cc66; opacity:0.9"></a-entity>
+        <a-entity line="start:0.5 1.6 -9.5; end:3.5 1.6 -8; color:#ff5500; opacity:0.9"></a-entity>
+        <a-entity line="start:2.5 4.2 -8; end:3.5 1.6 -8; color:#ffaa00; opacity:0.9"></a-entity>
+        <a-entity line="start:3.5 1.6 -8; end:5.5 1.6 -7; color:#ff5500; opacity:0.9"></a-entity>
+        <a-entity line="start:5.5 1.6 -7; end:7.5 1.6 -6; color:#ff5500; opacity:0.9"></a-entity>
+        <a-entity line="start:7.5 1.6 -6; end:9.5 1.6 -5; color:#ff5500; opacity:0.9"></a-entity>
+
+        <!-- Title bar -->
+        <a-entity position="2 7.8 -8.5">
+          <a-plane width="10.5" height="0.78" color="#1a0505" opacity="0.96" material="shader:flat"></a-plane>
+          <a-plane width="10.5" height="0.05" color="#ff3333" opacity="0.9" material="shader:flat" position="0 0.415 0.01"></a-plane>
+          <a-plane width="10.5" height="0.05" color="#ff3333" opacity="0.9" material="shader:flat" position="0 -0.415 0.01"></a-plane>
+          <a-text value="CONSEQUENCE SIMULATOR   |   Task A delayed 1 day   |   PROJECT END DATE: DAY 21   (+1 DAY)"
+            position="0 0 0.02" align="center" color="#ff4444" width="10.0"></a-text>
+        </a-entity>
+
+        <!-- Day counter -->
+        <a-entity position="2 6.4 -8.2">
+          <a-plane width="5.5" height="0.80" color="#2a0000" opacity="0.96" material="shader:flat"></a-plane>
+          <a-plane width="5.5" height="0.05" color="#ff0000" opacity="1" material="shader:flat" position="0 0.42 0.01"></a-plane>
+          <a-text value="PROJECT END:  DAY 21  (+1 DAY DELAY)" position="0 0 0.02" align="center" color="#ff2222" width="5.1" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
+        </a-entity>
+
+        <!-- NODE A — white flash (triggered) -->
+        <a-entity position="-5.5 1.6 -6">
+          <a-torus radius="0.78" radius-tubular="0.030" color="#ffffff" opacity="0.9"
+            animation="property:rotation; to:0 360 0; loop:true; dur:1800; easing:linear"></a-torus>
+          <a-sphere radius="0.58" color="#ffffaa"
+            material="shader:standard; metalness:0.1; roughness:0.3; emissive:#ffffff; emissiveIntensity:1.0"></a-sphere>
+          <a-plane position="0 0 0.59" width="0.48" height="0.48" color="#888800" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="A" position="0 0 0.61" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#000000" width="0.95" baseline="center"></a-text>
+          <a-text value="Requirements Analysis" position="0 -0.98 0" align="center" color="#ffff88" width="3.4"></a-text>
+          <a-text value="TRIGGERED   +1 DAY DELAY" position="0 -1.35 0" align="center" color="#ffff00" width="3.2"></a-text>
+        </a-entity>
+
+        <!-- NODE B — green (float absorbs) -->
+        <a-entity position="-1.5 4.2 -7">
+          <a-torus radius="0.78" radius-tubular="0.030" color="#00cc55" opacity="0.6"
+            animation="property:rotation; to:0 360 0; loop:true; dur:10000; easing:linear"></a-torus>
+          <a-sphere radius="0.58" color="#007733"
+            material="shader:standard; metalness:0.3; roughness:0.5; emissive:#003322; emissiveIntensity:0.6"></a-sphere>
+          <a-plane position="0 0 0.59" width="0.48" height="0.48" color="#004422" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="B" position="0 0 0.61" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.95" baseline="center"></a-text>
+          <a-text value="UI/UX Design" position="0 -0.98 0" align="center" color="#88ffaa" width="3.4"></a-text>
+          <a-text value="FLOAT ABSORBS DELAY" position="0 -1.35 0" align="center" color="#44ee88" width="3.2"></a-text>
+        </a-entity>
+
+        <!-- NODES C D F G H — all orange cascaded -->
+        <a-entity position="-2.5 1.6 -8">
+          <a-torus radius="0.78" radius-tubular="0.030" color="#ff6600" opacity="0.75"
+            animation="property:rotation; to:0 360 0; loop:true; dur:2200; easing:linear"></a-torus>
+          <a-sphere radius="0.58" color="#cc4400"
+            material="shader:standard; metalness:0.3; roughness:0.4; emissive:#882200; emissiveIntensity:0.85"></a-sphere>
+          <a-plane position="0 0 0.59" width="0.48" height="0.48" color="#772200" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="C" position="0 0 0.61" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.95" baseline="center"></a-text>
+          <a-text value="Database Schema" position="0 -0.98 0" align="center" color="#ffaa44" width="3.4"></a-text>
+          <a-text value="CASCADED   +1 DAY" position="0 -1.35 0" align="center" color="#ff8800" width="3.0"></a-text>
+        </a-entity>
+
+        <a-entity position="0.5 1.6 -9.5">
+          <a-torus radius="0.90" radius-tubular="0.037" color="#ff6600" opacity="0.75"
+            animation="property:rotation; to:0 360 0; loop:true; dur:2000; easing:linear"></a-torus>
+          <a-sphere radius="0.70" color="#cc4400"
+            material="shader:standard; metalness:0.35; roughness:0.4; emissive:#882200; emissiveIntensity:0.85"></a-sphere>
+          <a-plane position="0 0 0.71" width="0.54" height="0.54" color="#772200" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="D" position="0 0 0.73" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="1.05" baseline="center"></a-text>
+          <a-text value="Backend API Dev" position="0 -1.08 0" align="center" color="#ffaa44" width="3.6"></a-text>
+          <a-text value="CASCADED   +1 DAY" position="0 -1.46 0" align="center" color="#ff8800" width="3.2"></a-text>
+        </a-entity>
+
+        <!-- NODE E — green (float absorbs) -->
+        <a-entity position="2.5 4.2 -8">
+          <a-torus radius="0.78" radius-tubular="0.030" color="#00cc55" opacity="0.6"
+            animation="property:rotation; to:0 360 0; loop:true; dur:11500; easing:linear"></a-torus>
+          <a-sphere radius="0.58" color="#007733"
+            material="shader:standard; metalness:0.3; roughness:0.5; emissive:#003322; emissiveIntensity:0.6"></a-sphere>
+          <a-plane position="0 0 0.59" width="0.48" height="0.48" color="#004422" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="E" position="0 0 0.61" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.95" baseline="center"></a-text>
+          <a-text value="Frontend Dev" position="0 -0.98 0" align="center" color="#88ffaa" width="3.4"></a-text>
+          <a-text value="FLOAT ABSORBS DELAY" position="0 -1.35 0" align="center" color="#44ee88" width="3.2"></a-text>
+        </a-entity>
+
+        <a-entity position="3.5 1.6 -8">
+          <a-torus radius="0.82" radius-tubular="0.033" color="#ff6600" opacity="0.75"
+            animation="property:rotation; to:0 360 0; loop:true; dur:2400; easing:linear"></a-torus>
+          <a-sphere radius="0.62" color="#cc4400"
+            material="shader:standard; metalness:0.3; roughness:0.4; emissive:#882200; emissiveIntensity:0.85"></a-sphere>
+          <a-plane position="0 0 0.63" width="0.50" height="0.50" color="#772200" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="F" position="0 0 0.65" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.95" baseline="center"></a-text>
+          <a-text value="API Integration" position="0 -1.02 0" align="center" color="#ffaa44" width="3.4"></a-text>
+          <a-text value="CASCADED   +1 DAY" position="0 -1.39 0" align="center" color="#ff8800" width="3.0"></a-text>
+        </a-entity>
+
+        <a-entity position="5.5 1.6 -7">
+          <a-torus radius="0.78" radius-tubular="0.030" color="#ff6600" opacity="0.75"
+            animation="property:rotation; to:0 360 0; loop:true; dur:2600; easing:linear"></a-torus>
+          <a-sphere radius="0.58" color="#cc4400"
+            material="shader:standard; metalness:0.3; roughness:0.4; emissive:#882200; emissiveIntensity:0.85"></a-sphere>
+          <a-plane position="0 0 0.59" width="0.48" height="0.48" color="#772200" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="G" position="0 0 0.61" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.95" baseline="center"></a-text>
+          <a-text value="Unit Testing" position="0 -0.98 0" align="center" color="#ffaa44" width="3.4"></a-text>
+          <a-text value="CASCADED   +1 DAY" position="0 -1.35 0" align="center" color="#ff8800" width="3.0"></a-text>
+        </a-entity>
+
+        <a-entity position="7.5 1.6 -6">
+          <a-torus radius="0.78" radius-tubular="0.030" color="#ff6600" opacity="0.75"
+            animation="property:rotation; to:0 360 0; loop:true; dur:2800; easing:linear"></a-torus>
+          <a-sphere radius="0.58" color="#cc4400"
+            material="shader:standard; metalness:0.3; roughness:0.4; emissive:#882200; emissiveIntensity:0.85"></a-sphere>
+          <a-plane position="0 0 0.59" width="0.48" height="0.48" color="#772200" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="H" position="0 0 0.61" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.95" baseline="center"></a-text>
+          <a-text value="User Acceptance" position="0 -0.98 0" align="center" color="#ffaa44" width="3.4"></a-text>
+          <a-text value="CASCADED   +1 DAY" position="0 -1.35 0" align="center" color="#ff8800" width="3.0"></a-text>
+        </a-entity>
+
+        <!-- NODE I — red/orange project end late -->
+        <a-entity position="9.5 1.6 -5">
+          <a-torus radius="0.84" radius-tubular="0.035" color="#ff4400" opacity="0.80"
+            animation="property:rotation; to:0 360 0; loop:true; dur:1800; easing:linear"></a-torus>
+          <a-torus radius="1.00" radius-tubular="0.018" color="#ff6600" opacity="0.35"
+            animation="property:rotation; to:0 -360 0; loop:true; dur:3000; easing:linear"></a-torus>
+          <a-sphere radius="0.62" color="#cc3300"
+            material="shader:standard; metalness:0.5; roughness:0.3; emissive:#882200; emissiveIntensity:0.90"></a-sphere>
+          <a-plane position="0 0 0.63" width="0.50" height="0.50" color="#772200" opacity="1" material="shader:flat"></a-plane>
+          <a-text value="I" position="0 0 0.65" align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" color="#ffffff" width="0.95" baseline="center"></a-text>
+          <a-text value="Deployment" position="0 -1.02 0" align="center" color="#ffaa44" width="3.4"></a-text>
+          <a-text value="PROJECT END: DAY 21" position="0 -1.39 0" align="center" color="#ff4400" width="3.2"></a-text>
+        </a-entity>
+
+        <!-- Legend -->
+        <a-entity position="2 -0.5 -7.5">
+          <a-plane width="12.5" height="0.60" color="#1a0505" opacity="0.95" material="shader:flat"></a-plane>
+          <a-plane width="12.5" height="0.04" color="#ff3333" opacity="0.5" material="shader:flat" position="0 0.32 0.01"></a-plane>
+          <a-text value="WHITE = Delay Source (Task A)          ORANGE = Cascaded (+1 day)          GREEN = Float absorbed delay          GOLD = Project End (now Day 21)"
+            position="0 0 0.02" align="center" color="#aa7755" width="12.0"></a-text>
+        </a-entity>
+
+        <a-entity id="cam6"
+          camera="fov: 88; near: 0.1; far: 1000"
+          look-controls="pointerLockEnabled: false"
+          wasd-controls="acceleration: 16"
+          position="2 3.5 5">
+          <a-cursor fuse="false" color="#ffffff" opacity="0" material="shader:flat"></a-cursor>
+        </a-entity>
+      </a-scene>
+    </div>
+
+    <!-- Fig 7 scene — Node B interior using iframe -->
+    <div id="scene-fig7" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:100;">
+      <iframe id="iframe-fig7" src="figure-node-b.html" style="width:100%; height:100%; border:none;"></iframe>
+    </div>
+
     <script>
-      var currentFigure = 'fig4';
-      var sceneLoaded = false;
+      var current = 'fig4';
 
-      var figureConfig = {
-        fig4: {
-          cameraPos: '2 3.2 5',
-          cameraRot: '0 0 0',
-          showNodes: true,
-          showConsequence: false,
-          showNodeD: false,
-          showNodeB: false,
-          bgSky: false,
-          label: 'Figure 4 — Hub Scene Overview'
-        },
-        fig5: {
-          cameraPos: '0 1.6 0.5',
-          cameraRot: '0 0 0',
-          showNodes: false,
-          showConsequence: false,
-          showNodeD: true,
-          showNodeB: false,
-          bgSky: true,
-          skyId: 'img-d',
-          label: 'Figure 5 — Node D Interior'
-        },
-        fig6: {
-          cameraPos: '2 3.2 5',
-          cameraRot: '0 0 0',
-          showNodes: false,
-          showConsequence: true,
-          showNodeD: false,
-          showNodeB: false,
-          bgSky: false,
-          label: 'Figure 6 — Consequence Cascade'
-        },
-        fig7: {
-          cameraPos: '0 1.6 0.5',
-          cameraRot: '0 0 0',
-          showNodes: false,
-          showConsequence: false,
-          showNodeD: false,
-          showNodeB: true,
-          bgSky: true,
-          skyId: 'img-b',
-          label: 'Figure 7 — Node B Interior'
-        }
-      };
-
-      function selectFigure(fig) {
-        currentFigure = fig;
-        document.querySelectorAll('.fig-btn').forEach(function(btn) {
-          btn.classList.remove('active');
+      function sel(fig) {
+        current = fig;
+        ['fig4','fig5','fig6','fig7'].forEach(function(f) {
+          document.getElementById('btn-' + f).classList.remove('active');
         });
         document.getElementById('btn-' + fig).classList.add('active');
       }
 
-      function loadScene() {
-        var cfg = figureConfig[currentFigure];
-        var scene = document.getElementById('main-scene');
-        var panel = document.getElementById('control-panel');
-
-        // Show scene
-        scene.style.display = 'block';
-        panel.style.display = 'none';
-
-        // Show scene controls
-        document.getElementById('scene-controls').style.display = 'flex';
-        document.getElementById('status-bar').style.display = 'block';
-        setStatus('Loading ' + cfg.label + '...');
-
-        // Hub nodes visibility
-        var hubElements = ['hub-lines','hub-title','hub-hud',
-          'hub-node-a','hub-node-b','hub-node-c','hub-node-d',
-          'hub-node-e','hub-node-f','hub-node-g','hub-node-h','hub-node-i'];
-
-        hubElements.forEach(function(id) {
-          var el = document.getElementById(id);
-          if (el) el.setAttribute('visible', cfg.showNodes ? 'true' : 'false');
-        });
-
-        // Interior scenes
-        document.getElementById('scene-node-d').setAttribute('visible', cfg.showNodeD ? 'true' : 'false');
-        document.getElementById('scene-node-b').setAttribute('visible', cfg.showNodeB ? 'true' : 'false');
-        document.getElementById('scene-consequence').setAttribute('visible', cfg.showConsequence ? 'true' : 'false');
-
-        // Background sky
-        var existingSky = document.querySelector('a-sky:not([src])');
-        if (cfg.bgSky) {
-          scene.setAttribute('background', 'color: #000000');
-        } else {
-          scene.setAttribute('background', 'color: #04060e');
-        }
-
-        // Camera position
-        var camera = document.getElementById('main-camera');
-        camera.setAttribute('position', cfg.cameraPos);
-        camera.setAttribute('rotation', cfg.cameraRot);
-
-        // Show cascade button only for Fig 6
-        var cascadeBtn = document.getElementById('cascade-btn');
-        cascadeBtn.style.display = (currentFigure === 'fig6') ? 'block' : 'none';
-
+      function loadFigure() {
+        document.getElementById('control-panel').style.display = 'none';
+        document.getElementById('scene-' + current).style.display = 'block';
+        document.getElementById('overlay-controls').style.display = 'flex';
+        showStatus('Loading scene — please wait 4 seconds for full render...');
         setTimeout(function() {
-          setStatus('Scene ready — adjust view if needed, then click CAPTURE');
-          document.getElementById('capture-btn').style.display = 'block';
-          sceneLoaded = true;
-        }, 2500);
+          showStatus('<span>Scene ready.</span> Adjust view if needed, then click Capture.');
+          document.getElementById('cap-btn').style.display = 'block';
+        }, 4000);
       }
 
-      function captureNow() {
-        if (!sceneLoaded) return;
-        var cfg = figureConfig[currentFigure];
-        setStatus('Capturing at 3900 x 2194 px...');
-        var scene = document.querySelector('a-scene');
+      function backToPanel() {
+        ['fig4','fig5','fig6','fig7'].forEach(function(f) {
+          document.getElementById('scene-' + f).style.display = 'none';
+        });
+        document.getElementById('control-panel').style.display = 'flex';
+        document.getElementById('overlay-controls').style.display = 'none';
+        document.getElementById('status').style.display = 'none';
+        document.getElementById('cap-btn').style.display = 'none';
+      }
+
+      function doCapture() {
+        if (current === 'fig5' || current === 'fig7') {
+          // Iframe scenes — message the iframe to capture
+          var iframeId = 'iframe-' + current;
+          var iframe = document.getElementById(iframeId);
+          if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage('capture', '*');
+            showStatus('Capturing interior scene... check Downloads folder.');
+          }
+          return;
+        }
+        // Direct a-scene capture for fig4 and fig6
+        var sceneId = 'asc-' + current;
+        var scene = document.getElementById(sceneId);
+        if (!scene) return;
+        showStatus('Capturing at 3900 x 2194...');
         scene.setAttribute('screenshot', {width: 3900, height: 2194});
         setTimeout(function() {
           scene.components.screenshot.capture('perspective');
-          setStatus('Captured. Check your Downloads folder. Rename file to: ' + cfg.label.replace(/ — /g, '-').replace(/\s/g, '-').toLowerCase() + '.png');
-        }, 500);
+          showStatus('<span>Captured.</span> Check your Downloads folder. Rename immediately.');
+        }, 600);
       }
 
-      function triggerCascade() {
-        setStatus('Cascade active — all critical nodes lit orange. Click CAPTURE NOW.');
-      }
-
-      function showPanel() {
-        document.getElementById('control-panel').style.display = 'flex';
-        document.getElementById('scene-controls').style.display = 'none';
-        document.getElementById('status-bar').style.display = 'none';
-        document.getElementById('capture-btn').style.display = 'none';
-        sceneLoaded = false;
-      }
-
-      function setStatus(msg) {
-        document.getElementById('status-text').innerHTML = msg;
+      function showStatus(msg) {
+        var s = document.getElementById('status');
+        s.style.display = 'block';
+        s.innerHTML = msg;
       }
     </script>
-
   </body>
 </html>
