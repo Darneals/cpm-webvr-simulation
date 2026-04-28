@@ -203,20 +203,23 @@
            Positioned above the network — lower than before
            so it stays within the capture frame
       ══════════════════════════════════════════════════ -->
-      <a-entity position="3.0 6.8 -7.0">
-        <a-plane width="12.0" height="0.78" color="#040a1a" opacity="0.95" material="shader:flat"></a-plane>
-        <a-plane width="12.0" height="0.055" color="#4a9eff" opacity="0.70" material="shader:flat" position="0  0.415 0.01"></a-plane>
-        <a-plane width="12.0" height="0.055" color="#4a9eff" opacity="0.70" material="shader:flat" position="0 -0.415 0.01"></a-plane>
-        <a-text value="SOFTWARE DEVELOPMENT PROJECT  ·  CRITICAL PATH: A · C · D · F · G · H · I  =  20 DAYS"
-          position="0 0 0.02" align="center" color="#4a9eff"
+      <a-entity position="3.0 6.4 -9.5">
+        <a-plane width="17.0" height="1.10" color="#040a1a" opacity="0.95" material="shader:flat"></a-plane>
+        <a-plane width="17.0" height="0.055" color="#4a9eff" opacity="0.70" material="shader:flat" position="0  0.575 0.01"></a-plane>
+        <a-plane width="17.0" height="0.055" color="#4a9eff" opacity="0.70" material="shader:flat" position="0 -0.575 0.01"></a-plane>
+        <a-text value="SOFTWARE DEVELOPMENT PROJECT"
+          position="0 0.22 0.02" align="center" color="#4a9eff"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          width="11.5"></a-text>
+          width="16.0"></a-text>
+        <a-text value="CRITICAL PATH: A - C - D - F - G - H - I  =  20 DAYS"
+          position="0 -0.22 0.02" align="center" color="#88ccff"
+          width="16.0"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            LEGEND BAR — bottom of scene, always in frame
       ══════════════════════════════════════════════════ -->
-      <a-entity position="3.0 -0.6 -5.5">
+      <a-entity position="3.0 -0.4 -7.0">
         <a-plane width="10.0" height="0.62" color="#040a1a" opacity="0.92" material="shader:flat"></a-plane>
         <a-plane width="10.0" height="0.045" color="#223355" opacity="0.80" material="shader:flat" position="0  0.335 0.01"></a-plane>
         <a-plane width="10.0" height="0.045" color="#223355" opacity="0.80" material="shader:flat" position="0 -0.335 0.01"></a-plane>
@@ -450,7 +453,7 @@
       <!-- ══════════════════════════════════════════════════
            CONSEQUENCE SIMULATOR PORTAL
       ══════════════════════════════════════════════════ -->
-      <a-entity position="3.0 -1.55 -6.0">
+      <a-entity position="3.0 -1.6 -7.5">
         <a-plane width="8.5" height="0.66" color="#0e0520" opacity="0.96"
           material="shader:flat"
           link="href:consequence.html"
@@ -474,10 +477,10 @@
            FOV=88 — wider than default to pull all nodes in
       ══════════════════════════════════════════════════ -->
       <a-entity
-        camera="fov: 88; near: 0.1; far: 1000"
+        camera="fov: 78; near: 0.1; far: 1000"
         look-controls="pointerLockEnabled: false"
         wasd-controls="acceleration: 18"
-        position="3.0 2.4 4.5"
+        position="3.0 2.0 8.5"
       >
         <a-cursor
           fuse="true"
