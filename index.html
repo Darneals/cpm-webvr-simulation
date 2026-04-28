@@ -180,30 +180,30 @@
            Amber = E converging into F
       ══════════════════════════════════════════════════ -->
       <!-- A → C  (critical) -->
-      <a-entity line="start:-4.5 1.8 -5.5; end:-1.5 1.8 -7.0; color:#ff2222; opacity:0.90"></a-entity>
+      <a-entity line="start:-3.0 1.8 -5.5; end:-1.5 1.8 -7.0; color:#ff2222; opacity:0.90"></a-entity>
       <!-- A → B  (non-critical) -->
-      <a-entity line="start:-4.5 1.8 -5.5; end:-1.5 4.6 -6.5; color:#00cc55; opacity:0.85"></a-entity>
+      <a-entity line="start:-3.0 1.8 -5.5; end:-1.5 3.6 -6.5; color:#00cc55; opacity:0.85"></a-entity>
       <!-- C → D  (critical) -->
       <a-entity line="start:-1.5 1.8 -7.0; end:1.5 1.8 -8.5; color:#ff2222; opacity:0.90"></a-entity>
       <!-- B → E  (non-critical) -->
-      <a-entity line="start:-1.5 4.6 -6.5; end:4.5 4.6 -7.0; color:#00cc55; opacity:0.85"></a-entity>
+      <a-entity line="start:-1.5 3.6 -6.5; end:4.5 3.6 -7.0; color:#00cc55; opacity:0.85"></a-entity>
       <!-- D → F  (critical) -->
       <a-entity line="start:1.5 1.8 -8.5; end:4.5 1.8 -7.0; color:#ff2222; opacity:0.90"></a-entity>
       <!-- E → F  (convergence — amber) -->
-      <a-entity line="start:4.5 4.6 -7.0; end:4.5 1.8 -7.0; color:#ffaa00; opacity:0.85"></a-entity>
+      <a-entity line="start:4.5 3.6 -7.0; end:4.5 1.8 -7.0; color:#ffaa00; opacity:0.85"></a-entity>
       <!-- F → G  (critical) -->
       <a-entity line="start:4.5 1.8 -7.0; end:7.0 1.8 -6.0; color:#ff2222; opacity:0.90"></a-entity>
       <!-- G → H  (critical) -->
       <a-entity line="start:7.0 1.8 -6.0; end:9.0 1.8 -5.5; color:#ff2222; opacity:0.90"></a-entity>
       <!-- H → I  (critical) -->
-      <a-entity line="start:9.0 1.8 -5.5; end:10.5 1.8 -4.5; color:#ff2222; opacity:0.90"></a-entity>
+      <a-entity line="start:9.0 1.8 -5.5; end:9.5 1.8 -4.5; color:#ff2222; opacity:0.90"></a-entity>
 
       <!-- ══════════════════════════════════════════════════
            TITLE BANNER
            Positioned above the network — lower than before
            so it stays within the capture frame
       ══════════════════════════════════════════════════ -->
-      <a-entity position="3.0 6.4 -9.5">
+      <a-entity position="3.0 9.0 -11.0">
         <a-plane width="17.0" height="1.10" color="#040a1a" opacity="0.95" material="shader:flat"></a-plane>
         <a-plane width="17.0" height="0.055" color="#4a9eff" opacity="0.70" material="shader:flat" position="0  0.575 0.01"></a-plane>
         <a-plane width="17.0" height="0.055" color="#4a9eff" opacity="0.70" material="shader:flat" position="0 -0.575 0.01"></a-plane>
@@ -238,7 +238,7 @@
            NODE A — Requirements Analysis
            CRITICAL  |  3 days  |  Float: 0
       ══════════════════════════════════════════════════ -->
-      <a-entity position="-4.5 1.8 -5.5">
+      <a-entity position="-3.0 1.8 -5.5">
         <a-torus radius="0.80" radius-tubular="0.030" color="#ff2222" opacity="0.40"
           animation="property:rotation; to:0 360 0; loop:true; dur:7000; easing:linear"></a-torus>
         <a-sphere radius="0.60" color="#cc1111"
@@ -261,7 +261,7 @@
            NODE B — UI/UX Design
            NON-CRITICAL  |  4 days  |  Float: 1
       ══════════════════════════════════════════════════ -->
-      <a-entity position="-1.5 4.6 -6.5">
+      <a-entity position="-1.5 3.6 -6.5">
         <a-torus radius="0.80" radius-tubular="0.030" color="#00bb55" opacity="0.38"
           animation="property:rotation; to:0 360 0; loop:true; dur:10000; easing:linear"></a-torus>
         <a-sphere radius="0.60" color="#006633"
@@ -335,7 +335,7 @@
            NODE E — Frontend Development
            NON-CRITICAL  |  5 days  |  Float: 1
       ══════════════════════════════════════════════════ -->
-      <a-entity position="4.5 4.6 -7.0">
+      <a-entity position="4.5 3.6 -7.0">
         <a-torus radius="0.80" radius-tubular="0.030" color="#00bb55" opacity="0.38"
           animation="property:rotation; to:0 360 0; loop:true; dur:11500; easing:linear"></a-torus>
         <a-sphere radius="0.60" color="#006633"
@@ -428,7 +428,7 @@
            NODE I — Deployment (PROJECT END)
            CRITICAL GOLD  |  1 day  |  Float: 0
       ══════════════════════════════════════════════════ -->
-      <a-entity position="10.5 1.8 -4.5">
+      <a-entity position="9.5 1.8 -4.5">
         <!-- Triple ring — project terminus -->
         <a-torus radius="0.88" radius-tubular="0.036" color="#ffcc00" opacity="0.60"
           animation="property:rotation; to:0 360 0; loop:true; dur:4500; easing:linear"></a-torus>
@@ -480,7 +480,7 @@
         camera="fov: 78; near: 0.1; far: 1000"
         look-controls="pointerLockEnabled: false"
         wasd-controls="acceleration: 18"
-        position="3.0 2.0 8.5"
+        position="3.2 2.8 9.5"
       >
         <a-cursor
           fuse="true"
