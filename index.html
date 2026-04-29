@@ -121,7 +121,7 @@
 
          NODE POSITIONS (x  y  z):
          Critical path row (Z varies for depth):
-           A:  -7  1.6  -5    (start, nearest)
+           A:  -3  1.6  -5    (start, nearest)
            C:  -3  1.6  -7
            D:   1  1.6  -9    (deepest — longest task)
            F:   5  1.6  -7
@@ -169,9 +169,9 @@
            Amber = converging non-critical into critical
       ══════════════════════════════════════════════════ -->
       <!-- A → C -->
-      <a-entity line="start:-5 1.6 -5; end:-2 1.6 -7; color:#ff3333; opacity:0.75"></a-entity>
+      <a-entity line="start:-3 1.6 -5; end:-2 1.6 -7; color:#ff3333; opacity:0.75"></a-entity>
       <!-- A → B -->
-      <a-entity line="start:-5 1.6 -5; end:-2 4.2 -6; color:#00cc66; opacity:0.75"></a-entity>
+      <a-entity line="start:-3 1.6 -5; end:-2 4.2 -6; color:#00cc66; opacity:0.75"></a-entity>
       <!-- C → D -->
       <a-entity line="start:-2 1.6 -7; end:1 1.6 -9; color:#ff3333; opacity:0.75"></a-entity>
       <!-- B → E -->
@@ -191,7 +191,7 @@
            TITLE BANNER
            Positioned high above the network, centred
       ══════════════════════════════════════════════════ -->
-      <a-entity position="3 7.0 -7">
+      <a-entity position="3 7.5 -5">
         <a-plane width="9.5" height="0.72" color="#0a1428" opacity="0.92" material="shader:flat"></a-plane>
         <a-plane width="9.5" height="0.06" color="#4a9eff" opacity="0.6" material="shader:flat" position="0 0.39 0.01"></a-plane>
         <a-plane width="9.5" height="0.06" color="#4a9eff" opacity="0.6" material="shader:flat" position="0 -0.39 0.01"></a-plane>
@@ -203,7 +203,7 @@
            NODE A — Requirements Analysis
            Position: -7  1.6  -5  |  CRITICAL  |  Float: 0
       ══════════════════════════════════════════════════ -->
-      <a-entity position="-5 1.6 -5">
+      <a-entity position="-3 1.6 -5">
         <!-- Glow ring -->
         <a-torus radius="0.75" radius-tubular="0.028" color="#ff2222" opacity="0.35"
           animation="property:rotation; to:0 360 0; loop:true; dur:7000; easing:linear"></a-torus>
@@ -216,9 +216,9 @@
         <!-- Letter badge — square plane on sphere face -->
         <a-plane position="0 0 0.57" width="0.46" height="0.46"
           color="#990000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="A" position="0 0 0.59" align="center"
+        <a-text value="A" position="0 0 0.65" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="0.9" baseline="center"></a-text>
+          color="#ffffff" width="1.4" baseline="center"></a-text>
         <!-- Node label below sphere -->
         <a-text value="Requirements Analysis" position="0 -1.0 0"
           align="center" color="#ffaaaa" width="3.5"></a-text>
@@ -240,9 +240,9 @@
         </a-sphere>
         <a-plane position="0 0 0.57" width="0.46" height="0.46"
           color="#005522" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="B" position="0 0 0.59" align="center"
+        <a-text value="B" position="0 0 0.65" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="0.9" baseline="center"></a-text>
+          color="#ffffff" width="1.4" baseline="center"></a-text>
         <a-text value="UI/UX Design" position="0 -1.0 0"
           align="center" color="#88ffaa" width="3.5"></a-text>
         <a-text value="NON-CRITICAL  ·  Float: 1" position="0 -1.38 0"
@@ -263,9 +263,9 @@
         </a-sphere>
         <a-plane position="0 0 0.57" width="0.46" height="0.46"
           color="#990000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="C" position="0 0 0.59" align="center"
+        <a-text value="C" position="0 0 0.65" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="0.9" baseline="center"></a-text>
+          color="#ffffff" width="1.4" baseline="center"></a-text>
         <a-text value="Database Schema Design" position="0 -1.0 0"
           align="center" color="#ffaaaa" width="3.5"></a-text>
         <a-text value="CRITICAL  ·  Float: 0" position="0 -1.38 0"
@@ -290,7 +290,7 @@
         </a-sphere>
         <a-plane position="0 0 0.69" width="0.52" height="0.52"
           color="#880000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="D" position="0 0 0.71" align="center"
+        <a-text value="D" position="0 0 0.78" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
           color="#ffffff" width="1.0" baseline="center"></a-text>
         <a-text value="Backend API Development" position="0 -1.12 0"
@@ -313,9 +313,9 @@
         </a-sphere>
         <a-plane position="0 0 0.57" width="0.46" height="0.46"
           color="#005522" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="E" position="0 0 0.59" align="center"
+        <a-text value="E" position="0 0 0.65" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="0.9" baseline="center"></a-text>
+          color="#ffffff" width="1.4" baseline="center"></a-text>
         <a-text value="Frontend Development" position="0 -1.0 0"
           align="center" color="#88ffaa" width="3.5"></a-text>
         <a-text value="NON-CRITICAL  ·  Float: 1" position="0 -1.38 0"
@@ -336,9 +336,9 @@
         </a-sphere>
         <a-plane position="0 0 0.61" width="0.48" height="0.48"
           color="#990000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="F" position="0 0 0.63" align="center"
+        <a-text value="F" position="0 0 0.70" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="0.9" baseline="center"></a-text>
+          color="#ffffff" width="1.4" baseline="center"></a-text>
         <a-text value="API Integration" position="0 -1.04 0"
           align="center" color="#ffaaaa" width="3.5"></a-text>
         <a-text value="CRITICAL  ·  Convergence  ·  Float: 0" position="0 -1.42 0"
@@ -359,9 +359,9 @@
         </a-sphere>
         <a-plane position="0 0 0.57" width="0.46" height="0.46"
           color="#990000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="G" position="0 0 0.59" align="center"
+        <a-text value="G" position="0 0 0.65" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="0.9" baseline="center"></a-text>
+          color="#ffffff" width="1.4" baseline="center"></a-text>
         <a-text value="Unit Testing" position="0 -1.0 0"
           align="center" color="#ffaaaa" width="3.5"></a-text>
         <a-text value="CRITICAL  ·  Float: 0" position="0 -1.38 0"
@@ -382,9 +382,9 @@
         </a-sphere>
         <a-plane position="0 0 0.57" width="0.46" height="0.46"
           color="#990000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="H" position="0 0 0.59" align="center"
+        <a-text value="H" position="0 0 0.65" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="0.9" baseline="center"></a-text>
+          color="#ffffff" width="1.4" baseline="center"></a-text>
         <a-text value="User Acceptance Testing" position="0 -1.0 0"
           align="center" color="#ffaaaa" width="3.5"></a-text>
         <a-text value="CRITICAL  ·  Float: 0" position="0 -1.38 0"
@@ -408,9 +408,9 @@
         </a-sphere>
         <a-plane position="0 0 0.61" width="0.48" height="0.48"
           color="#996600" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="I" position="0 0 0.63" align="center"
+        <a-text value="I" position="0 0 0.70" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="0.9" baseline="center"></a-text>
+          color="#ffffff" width="1.4" baseline="center"></a-text>
         <a-text value="Deployment" position="0 -1.04 0"
           align="center" color="#ffdd88" width="3.5"></a-text>
         <a-text value="PROJECT END  ·  Day 20" position="0 -1.42 0"
