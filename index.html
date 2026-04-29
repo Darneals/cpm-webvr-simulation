@@ -8,14 +8,12 @@
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
-      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #02040c; overflow: hidden; }
-      a-scene { position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; }
-      canvas { width: 100% !important; height: 100% !important; }
+      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0a0a1a; overflow: hidden; }
 
       /* ── START SCREEN ── */
       #start-screen {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(135deg, #02040c 0%, #060d22 50%, #02040c 100%);
+        background: linear-gradient(135deg, #0a0a1a 0%, #0d1b3e 50%, #0a0a1a 100%);
         display: flex; flex-direction: column; align-items: center;
         justify-content: center; z-index: 9999; text-align: center; padding: 20px;
       }
@@ -39,14 +37,14 @@
 
       /* ── HUD ── */
       #hud { position: fixed; top: 0; left: 0; right: 0; display: none; z-index: 100; pointer-events: none; }
-      #hud-bar { background: linear-gradient(180deg, rgba(2,4,12,0.96) 0%, transparent 100%); padding: 14px 24px 22px; display: flex; align-items: center; justify-content: space-between; }
+      #hud-bar { background: linear-gradient(180deg, rgba(5,10,25,0.95) 0%, transparent 100%); padding: 14px 24px 22px; display: flex; align-items: center; justify-content: space-between; }
       #hud-title { font-size: 12px; font-weight: 700; color: #4a9eff; letter-spacing: 2.5px; text-transform: uppercase; }
       #hud-legend { display: flex; gap: 18px; align-items: center; }
       .hud-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #8899bb; }
       .hud-dot { width: 10px; height: 10px; border-radius: 50%; }
 
       /* ── INSTRUCTION BAR ── */
-      #instruction-bar { position: fixed; bottom: 0; left: 0; right: 0; display: none; z-index: 100; pointer-events: none; background: linear-gradient(0deg, rgba(2,4,12,0.96) 0%, transparent 100%); padding: 22px 24px 16px; text-align: center; }
+      #instruction-bar { position: fixed; bottom: 0; left: 0; right: 0; display: none; z-index: 100; pointer-events: none; background: linear-gradient(0deg, rgba(5,10,25,0.95) 0%, transparent 100%); padding: 22px 24px 16px; text-align: center; }
       #instruction-text { font-size: 13px; color: #8899bb; letter-spacing: 0.3px; }
       #instruction-text span { color: #4a9eff; font-weight: 700; }
     </style>
@@ -116,36 +114,34 @@
     <!-- ══════════════════════════════════════════════════
          A-FRAME SCENE
 
-         LAYOUT RATIONALE:
-         Camera at position="2 2.4 4.5" fov=88 — pulls the entire
-         network into frame with ~80% fill at 3900x2194 capture.
+         DESIGN RATIONALE:
+         No info panels in the hub — clean professional 3D network.
+         Each node shows: letter badge + task name + status label only.
+         Full task information is inside each individual node scene.
 
-         NODE POSITIONS — tighter horizontal spread, uniform Z depth
-         spread of only 4 units (Z=-5 to Z=-9) so no node vanishes
-         into fog. Non-critical nodes elevated to Y=4.6.
-
-         Critical row (left to right, slight Z recession):
-           A: -4.5  1.8  -5.5   (start)
-           C: -1.5  1.8  -7.0
-           D:  1.5  1.8  -8.5   (deepest — longest task)
-           F:  4.5  1.8  -7.0   (convergence)
-           G:  7.0  1.8  -6.0
-           H:  9.0  1.8  -5.5
-           I: 10.5  1.8  -4.5   (end)
+         NODE POSITIONS (x  y  z):
+         Critical path row (Z varies for depth):
+           A:  -7  1.6  -5    (start, nearest)
+           C:  -3  1.6  -7
+           D:   1  1.6  -9    (deepest — longest task)
+           F:   5  1.6  -7
+           G:   8  1.6  -6
+           H:  11  1.6  -5
+           I:  13  1.6  -4    (end, nearest right)
 
          Non-critical upper row:
-           B: -1.5  4.6  -6.5
-           E:  4.5  4.6  -7.0
+           B:  -3  4.2  -6
+           E:   3  4.2  -7
 
-         Dependency line endpoints match node centres exactly.
+         Camera: 2.5  2.2  2   (centred, slightly elevated, close enough)
     ══════════════════════════════════════════════════ -->
     <a-scene
-      background="color: #02040c"
-      fog="type: exponential; color: #02040c; density: 0.008"
-      renderer="antialias: true; colorManagement: true; sortObjects: true; physicallyCorrectLights: true"
+      background="color: #04060e"
+      fog="type: exponential; color: #04060e; density: 0.012"
+      renderer="antialias: true; colorManagement: true; sortObjects: true"
       vr-mode-ui="enabled: true"
-      loading-screen="dotsColor: #4a9eff; backgroundColor: #02040c"
-      screenshot="width: 3900; height: 2194"
+      loading-screen="dotsColor: #4a9eff; backgroundColor: #04060e"
+      screenshot="width: 3840; height: 2160"
     >
 
       <!-- ── ASSET PRELOAD ── -->
@@ -162,327 +158,291 @@
       </a-assets>
 
       <!-- ── LIGHTING ── -->
-      <!-- Deep cool ambient — makes the void feel like outer space -->
-      <a-light type="ambient"     color="#0a1228" intensity="0.80"></a-light>
-      <!-- Primary blue key light from upper left -->
-      <a-light type="directional" color="#2255cc" intensity="0.35" position="-3 10 5"></a-light>
-      <!-- Warm fill from right to separate critical nodes -->
-      <a-light type="directional" color="#331100" intensity="0.20" position="8 4 2"></a-light>
-      <!-- Point light near centre to illuminate middle of network -->
-      <a-light type="point" color="#1133aa" intensity="0.40" position="3 5 -5" distance="18"></a-light>
-      <!-- Red hazard light above Node D — the longest task -->
-      <a-light type="point" color="#ff1100" intensity="0.50" position="1.5 5 -5.5" distance="10"></a-light>
-      <!-- Green accent above non-critical lane -->
-      <a-light type="point" color="#004422" intensity="0.35" position="1.5 6.5 -4.5" distance="12"></a-light>
+      <a-light type="ambient"     color="#1a2244" intensity="0.65"></a-light>
+      <a-light type="directional" color="#4a9eff" intensity="0.25" position="2  12  4"></a-light>
+      <a-light type="point"       color="#ffffff" intensity="0.12" position="3   6  0" distance="28"></a-light>
 
       <!-- ══════════════════════════════════════════════════
            DEPENDENCY LINES
-           Red   = critical path
-           Green = non-critical path
-           Amber = E converging into F
+           Red   = critical path connection
+           Green = non-critical connection
+           Amber = converging non-critical into critical
       ══════════════════════════════════════════════════ -->
-      <!-- A → C  (critical) -->
-      <a-entity line="start:-3.0 2.8 -4.0; end:-0.5 2.8 -5.0; color:#ff2222; opacity:0.90"></a-entity>
-      <!-- A → B  (non-critical) -->
-      <a-entity line="start:-3.0 2.8 -4.0; end:-1.0 4.4 -4.5; color:#00cc55; opacity:0.85"></a-entity>
-      <!-- C → D  (critical) -->
-      <a-entity line="start:-0.5 2.8 -5.0; end:1.5 2.8 -5.5; color:#ff2222; opacity:0.90"></a-entity>
-      <!-- B → E  (non-critical) -->
-      <a-entity line="start:-1.0 4.4 -4.5; end:4.0 4.4 -5.0; color:#00cc55; opacity:0.85"></a-entity>
-      <!-- D → F  (critical) -->
-      <a-entity line="start:1.5 2.8 -5.5; end:4.5 2.8 -5.0; color:#ff2222; opacity:0.90"></a-entity>
-      <!-- E → F  (convergence — amber) -->
-      <a-entity line="start:4.0 4.4 -5.0; end:4.5 2.8 -5.0; color:#ffaa00; opacity:0.85"></a-entity>
-      <!-- F → G  (critical) -->
-      <a-entity line="start:4.5 2.8 -5.0; end:6.5 2.8 -4.5; color:#ff2222; opacity:0.90"></a-entity>
-      <!-- G → H  (critical) -->
-      <a-entity line="start:6.5 2.8 -4.5; end:8.0 2.8 -4.0; color:#ff2222; opacity:0.90"></a-entity>
-      <!-- H → I  (critical) -->
-      <a-entity line="start:8.0 2.8 -4.0; end:9.5 2.8 -4.0; color:#ff2222; opacity:0.90"></a-entity>
+      <!-- A → C -->
+      <a-entity line="start:-5 1.6 -5; end:-2 1.6 -7; color:#ff3333; opacity:0.75"></a-entity>
+      <!-- A → B -->
+      <a-entity line="start:-5 1.6 -5; end:-2 4.2 -6; color:#00cc66; opacity:0.75"></a-entity>
+      <!-- C → D -->
+      <a-entity line="start:-2 1.6 -7; end:1 1.6 -9; color:#ff3333; opacity:0.75"></a-entity>
+      <!-- B → E -->
+      <a-entity line="start:-2 4.2 -6; end:3 4.2 -7; color:#00cc66; opacity:0.75"></a-entity>
+      <!-- D → F -->
+      <a-entity line="start:1 1.6 -9; end:4 1.6 -7; color:#ff3333; opacity:0.75"></a-entity>
+      <!-- E → F  (convergence) -->
+      <a-entity line="start:3 4.2 -7; end:4 1.6 -7; color:#ffaa00; opacity:0.75"></a-entity>
+      <!-- F → G -->
+      <a-entity line="start:4 1.6 -7; end:7 1.6 -6; color:#ff3333; opacity:0.75"></a-entity>
+      <!-- G → H -->
+      <a-entity line="start:7 1.6 -6; end:9 1.6 -5; color:#ff3333; opacity:0.75"></a-entity>
+      <!-- H → I -->
+      <a-entity line="start:9 1.6 -5; end:11 1.6 -4; color:#ff3333; opacity:0.75"></a-entity>
 
       <!-- ══════════════════════════════════════════════════
            TITLE BANNER
-           Positioned above the network — lower than before
-           so it stays within the capture frame
+           Positioned high above the network, centred
       ══════════════════════════════════════════════════ -->
-      <a-entity position="3.2 7.0 -5.0">
-        <a-plane width="13.0" height="1.00" color="#040a1a" opacity="0.95" material="shader:flat"></a-plane>
-        <a-plane width="13.0" height="0.055" color="#4a9eff" opacity="0.70" material="shader:flat" position="0  0.52 0.01"></a-plane>
-        <a-plane width="13.0" height="0.055" color="#4a9eff" opacity="0.70" material="shader:flat" position="0 -0.52 0.01"></a-plane>
-        <a-text value="SOFTWARE DEVELOPMENT PROJECT"
-          position="0 0.22 0.02" align="center" color="#4a9eff"
-          font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          width="12.5"></a-text>
-        <a-text value="CRITICAL PATH: A - C - D - F - G - H - I  =  20 DAYS"
-          position="0 -0.22 0.02" align="center" color="#88ccff"
-          width="12.5"</a-text>
-      </a-entity>
-
-      <!-- ══════════════════════════════════════════════════
-           LEGEND BAR — bottom of scene, always in frame
-      ══════════════════════════════════════════════════ -->
-      <a-entity position="3.2 1.3 -4.5">
-        <a-plane width="10.0" height="0.62" color="#040a1a" opacity="0.92" material="shader:flat"></a-plane>
-        <a-plane width="10.0" height="0.045" color="#223355" opacity="0.80" material="shader:flat" position="0  0.335 0.01"></a-plane>
-        <a-plane width="10.0" height="0.045" color="#223355" opacity="0.80" material="shader:flat" position="0 -0.335 0.01"></a-plane>
-        <!-- Red critical dot -->
-        <a-plane width="0.22" height="0.22" color="#ff2222" opacity="1.0" material="shader:flat" position="-3.8 0 0.02"></a-plane>
-        <a-text value="Critical Path  (Float = 0)" position="-2.9 0 0.02" align="left" color="#ff8888" width="3.8"></a-text>
-        <!-- Green dot -->
-        <a-plane width="0.22" height="0.22" color="#00cc55" opacity="1.0" material="shader:flat" position="-0.2 0 0.02"></a-plane>
-        <a-text value="Non-Critical  (Float = 1 day)" position="0.7 0 0.02" align="left" color="#88ffaa" width="4.0"></a-text>
-        <!-- Gold dot -->
-        <a-plane width="0.22" height="0.22" color="#ffdd00" opacity="1.0" material="shader:flat" position="3.5 0 0.02"></a-plane>
-        <a-text value="Project End" position="4.1 0 0.02" align="left" color="#ffdd88" width="2.5"></a-text>
+      <a-entity position="3 7.0 -7">
+        <a-plane width="9.5" height="0.72" color="#0a1428" opacity="0.92" material="shader:flat"></a-plane>
+        <a-plane width="9.5" height="0.06" color="#4a9eff" opacity="0.6" material="shader:flat" position="0 0.39 0.01"></a-plane>
+        <a-plane width="9.5" height="0.06" color="#4a9eff" opacity="0.6" material="shader:flat" position="0 -0.39 0.01"></a-plane>
+        <a-text value="SOFTWARE DEVELOPMENT PROJECT  ·  CRITICAL PATH: A → C → D → F → G → H → I  =  20 DAYS"
+          position="0 0 0.02" align="center" color="#4a9eff" width="9.1"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            NODE A — Requirements Analysis
-           CRITICAL  |  3 days  |  Float: 0
+           Position: -7  1.6  -5  |  CRITICAL  |  Float: 0
       ══════════════════════════════════════════════════ -->
-      <a-entity position="-3.0 2.8 -4.0">
-        <a-torus radius="0.80" radius-tubular="0.030" color="#ff2222" opacity="0.40"
+      <a-entity position="-5 1.6 -5">
+        <!-- Glow ring -->
+        <a-torus radius="0.75" radius-tubular="0.028" color="#ff2222" opacity="0.35"
           animation="property:rotation; to:0 360 0; loop:true; dur:7000; easing:linear"></a-torus>
-        <a-sphere radius="0.60" color="#cc1111"
-          material="shader:standard; metalness:0.30; roughness:0.50; emissive:#550000; emissiveIntensity:0.55"
-          animation="property:scale; to:1.08 1.08 1.08; dir:alternate; loop:true; dur:1800; easing:easeInOutSine"
+        <!-- Main sphere — clickable -->
+        <a-sphere radius="0.56" color="#bb0f0f"
+          material="shader:standard; metalness:0.25; roughness:0.55; emissive:#440000; emissiveIntensity:0.45"
+          animation="property:scale; to:1.07 1.07 1.07; dir:alternate; loop:true; dur:1800; easing:easeInOutSine"
           link="href:node-a.html" class="clickable" cursor-listener>
         </a-sphere>
-        <a-plane position="0 0 0.61" width="0.50" height="0.50"
+        <!-- Letter badge — square plane on sphere face -->
+        <a-plane position="0 0 0.57" width="0.46" height="0.46"
           color="#990000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="A" position="0 0 0.63" align="center"
+        <a-text value="A" position="0 0 0.59" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="1.0" baseline="center"></a-text>
-        <a-text value="Requirements Analysis" position="0 -1.08 0"
-          align="center" color="#ffaaaa" width="3.8"></a-text>
-        <a-text value="CRITICAL  ·  3 days  ·  Float: 0" position="0 -1.52 0"
-          align="center" color="#ff4444" width="3.5"></a-text>
+          color="#ffffff" width="0.9" baseline="center"></a-text>
+        <!-- Node label below sphere -->
+        <a-text value="Requirements Analysis" position="0 -1.0 0"
+          align="center" color="#ffaaaa" width="3.5"></a-text>
+        <a-text value="CRITICAL  ·  Float: 0" position="0 -1.38 0"
+          align="center" color="#ff4444" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            NODE B — UI/UX Design
-           NON-CRITICAL  |  4 days  |  Float: 1
+           Position: -3  4.2  -6  |  NON-CRITICAL  |  Float: 1
       ══════════════════════════════════════════════════ -->
-      <a-entity position="-1.0 4.4 -4.5">
-        <a-torus radius="0.80" radius-tubular="0.030" color="#00bb55" opacity="0.38"
+      <a-entity position="-2 4.2 -6">
+        <a-torus radius="0.75" radius-tubular="0.028" color="#00bb55" opacity="0.35"
           animation="property:rotation; to:0 360 0; loop:true; dur:10000; easing:linear"></a-torus>
-        <a-sphere radius="0.60" color="#006633"
-          material="shader:standard; metalness:0.25; roughness:0.55; emissive:#002a15; emissiveIntensity:0.50"
-          animation="property:scale; to:1.08 1.08 1.08; dir:alternate; loop:true; dur:2200; easing:easeInOutSine"
+        <a-sphere radius="0.56" color="#006633"
+          material="shader:standard; metalness:0.25; roughness:0.55; emissive:#002211; emissiveIntensity:0.45"
+          animation="property:scale; to:1.07 1.07 1.07; dir:alternate; loop:true; dur:2200; easing:easeInOutSine"
           link="href:node-b.html" class="clickable" cursor-listener>
         </a-sphere>
-        <a-plane position="0 0 0.61" width="0.50" height="0.50"
-          color="#004422" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="B" position="0 0 0.63" align="center"
+        <a-plane position="0 0 0.57" width="0.46" height="0.46"
+          color="#005522" opacity="1" material="shader:flat"></a-plane>
+        <a-text value="B" position="0 0 0.59" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="1.0" baseline="center"></a-text>
-        <a-text value="UI/UX Design" position="0 -1.08 0"
-          align="center" color="#88ffaa" width="3.8"></a-text>
-        <a-text value="NON-CRITICAL  ·  4 days  ·  Float: 1" position="0 -1.52 0"
-          align="center" color="#44ee88" width="3.5"></a-text>
+          color="#ffffff" width="0.9" baseline="center"></a-text>
+        <a-text value="UI/UX Design" position="0 -1.0 0"
+          align="center" color="#88ffaa" width="3.5"></a-text>
+        <a-text value="NON-CRITICAL  ·  Float: 1" position="0 -1.38 0"
+          align="center" color="#44ee88" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            NODE C — Database Schema Design
-           CRITICAL  |  2 days  |  Float: 0
+           Position: -3  1.6  -7  |  CRITICAL  |  Float: 0
       ══════════════════════════════════════════════════ -->
-      <a-entity position="-0.5 2.8 -5.0">
-        <a-torus radius="0.80" radius-tubular="0.030" color="#ff2222" opacity="0.40"
+      <a-entity position="-2 1.6 -7">
+        <a-torus radius="0.75" radius-tubular="0.028" color="#ff2222" opacity="0.35"
           animation="property:rotation; to:0 360 0; loop:true; dur:7800; easing:linear"></a-torus>
-        <a-sphere radius="0.60" color="#cc1111"
-          material="shader:standard; metalness:0.30; roughness:0.50; emissive:#550000; emissiveIntensity:0.55"
-          animation="property:scale; to:1.08 1.08 1.08; dir:alternate; loop:true; dur:1600; easing:easeInOutSine"
+        <a-sphere radius="0.56" color="#bb0f0f"
+          material="shader:standard; metalness:0.25; roughness:0.55; emissive:#440000; emissiveIntensity:0.45"
+          animation="property:scale; to:1.07 1.07 1.07; dir:alternate; loop:true; dur:1600; easing:easeInOutSine"
           link="href:node-c.html" class="clickable" cursor-listener>
         </a-sphere>
-        <a-plane position="0 0 0.61" width="0.50" height="0.50"
+        <a-plane position="0 0 0.57" width="0.46" height="0.46"
           color="#990000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="C" position="0 0 0.63" align="center"
+        <a-text value="C" position="0 0 0.59" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="1.0" baseline="center"></a-text>
-        <a-text value="Database Schema Design" position="0 -1.08 0"
-          align="center" color="#ffaaaa" width="3.8"></a-text>
-        <a-text value="CRITICAL  ·  2 days  ·  Float: 0" position="0 -1.52 0"
-          align="center" color="#ff4444" width="3.5"></a-text>
+          color="#ffffff" width="0.9" baseline="center"></a-text>
+        <a-text value="Database Schema Design" position="0 -1.0 0"
+          align="center" color="#ffaaaa" width="3.5"></a-text>
+        <a-text value="CRITICAL  ·  Float: 0" position="0 -1.38 0"
+          align="center" color="#ff4444" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            NODE D — Backend API Development
-           CRITICAL  |  6 days  |  Float: 0  |  LONGEST TASK
-           Largest sphere. Double ring. Red hazard lamp above.
+           Position:  1  1.6  -9  |  CRITICAL  |  Float: 0  |  6 DAYS
+           Largest sphere — most critical single task
       ══════════════════════════════════════════════════ -->
-      <a-entity position="1.5 2.8 -5.5">
-        <!-- Outer slow ring -->
-        <a-torus radius="1.05" radius-tubular="0.022" color="#ff3300" opacity="0.22"
-          animation="property:rotation; to:0 -360 0; loop:true; dur:9500; easing:linear"></a-torus>
-        <!-- Inner fast ring -->
-        <a-torus radius="0.90" radius-tubular="0.038" color="#ff0000" opacity="0.55"
-          animation="property:rotation; to:0 360 0; loop:true; dur:5200; easing:linear"></a-torus>
-        <a-sphere radius="0.72" color="#dd0000"
-          material="shader:standard; metalness:0.40; roughness:0.40; emissive:#660000; emissiveIntensity:0.65"
-          animation="property:scale; to:1.10 1.10 1.10; dir:alternate; loop:true; dur:1400; easing:easeInOutSine"
+      <a-entity position="1 1.6 -9">
+        <!-- Double ring for the longest task -->
+        <a-torus radius="0.88" radius-tubular="0.036" color="#ff0000" opacity="0.45"
+          animation="property:rotation; to:0 360 0; loop:true; dur:5500; easing:linear"></a-torus>
+        <a-torus radius="1.05" radius-tubular="0.018" color="#ff3333" opacity="0.18"
+          animation="property:rotation; to:0 -360 0; loop:true; dur:9000; easing:linear"></a-torus>
+        <a-sphere radius="0.68" color="#cc0000"
+          material="shader:standard; metalness:0.35; roughness:0.45; emissive:#550000; emissiveIntensity:0.55"
+          animation="property:scale; to:1.09 1.09 1.09; dir:alternate; loop:true; dur:1400; easing:easeInOutSine"
           link="href:node-d.html" class="clickable" cursor-listener>
         </a-sphere>
-        <a-plane position="0 0 0.73" width="0.56" height="0.56"
+        <a-plane position="0 0 0.69" width="0.52" height="0.52"
           color="#880000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="D" position="0 0 0.75" align="center"
+        <a-text value="D" position="0 0 0.71" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="1.1" baseline="center"></a-text>
-        <a-text value="Backend API Development" position="0 -1.18 0"
-          align="center" color="#ffaaaa" width="3.8"></a-text>
-        <a-text value="CRITICAL  ·  6 days  ·  Float: 0" position="0 -1.62 0"
-          align="center" color="#ff2222" width="3.5"></a-text>
+          color="#ffffff" width="1.0" baseline="center"></a-text>
+        <a-text value="Backend API Development" position="0 -1.12 0"
+          align="center" color="#ffaaaa" width="3.5"></a-text>
+        <a-text value="CRITICAL  ·  6 Days  ·  Float: 0" position="0 -1.52 0"
+          align="center" color="#ff2222" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            NODE E — Frontend Development
-           NON-CRITICAL  |  5 days  |  Float: 1
+           Position:  3  4.2  -7  |  NON-CRITICAL  |  Float: 1
       ══════════════════════════════════════════════════ -->
-      <a-entity position="4.0 4.4 -5.0">
-        <a-torus radius="0.80" radius-tubular="0.030" color="#00bb55" opacity="0.38"
+      <a-entity position="3 4.2 -7">
+        <a-torus radius="0.75" radius-tubular="0.028" color="#00bb55" opacity="0.35"
           animation="property:rotation; to:0 360 0; loop:true; dur:11500; easing:linear"></a-torus>
-        <a-sphere radius="0.60" color="#006633"
-          material="shader:standard; metalness:0.25; roughness:0.55; emissive:#002a15; emissiveIntensity:0.50"
-          animation="property:scale; to:1.08 1.08 1.08; dir:alternate; loop:true; dur:2400; easing:easeInOutSine"
+        <a-sphere radius="0.56" color="#006633"
+          material="shader:standard; metalness:0.25; roughness:0.55; emissive:#002211; emissiveIntensity:0.45"
+          animation="property:scale; to:1.07 1.07 1.07; dir:alternate; loop:true; dur:2400; easing:easeInOutSine"
           link="href:node-e.html" class="clickable" cursor-listener>
         </a-sphere>
-        <a-plane position="0 0 0.61" width="0.50" height="0.50"
-          color="#004422" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="E" position="0 0 0.63" align="center"
+        <a-plane position="0 0 0.57" width="0.46" height="0.46"
+          color="#005522" opacity="1" material="shader:flat"></a-plane>
+        <a-text value="E" position="0 0 0.59" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="1.0" baseline="center"></a-text>
-        <a-text value="Frontend Development" position="0 -1.08 0"
-          align="center" color="#88ffaa" width="3.8"></a-text>
-        <a-text value="NON-CRITICAL  ·  5 days  ·  Float: 1" position="0 -1.52 0"
-          align="center" color="#44ee88" width="3.5"></a-text>
+          color="#ffffff" width="0.9" baseline="center"></a-text>
+        <a-text value="Frontend Development" position="0 -1.0 0"
+          align="center" color="#88ffaa" width="3.5"></a-text>
+        <a-text value="NON-CRITICAL  ·  Float: 1" position="0 -1.38 0"
+          align="center" color="#44ee88" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            NODE F — API Integration (CONVERGENCE POINT)
-           CRITICAL  |  3 days  |  Float: 0
-           Slightly larger — where the two paths merge
+           Position:  5  1.6  -7  |  CRITICAL  |  Float: 0
       ══════════════════════════════════════════════════ -->
-      <a-entity position="4.5 2.8 -5.0">
-        <a-torus radius="0.86" radius-tubular="0.034" color="#ff2222" opacity="0.48"
-          animation="property:rotation; to:0 360 0; loop:true; dur:6500; easing:linear"></a-torus>
-        <a-sphere radius="0.64" color="#cc1111"
-          material="shader:standard; metalness:0.30; roughness:0.50; emissive:#550000; emissiveIntensity:0.55"
-          animation="property:scale; to:1.09 1.09 1.09; dir:alternate; loop:true; dur:1700; easing:easeInOutSine"
+      <a-entity position="4 1.6 -7">
+        <a-torus radius="0.80" radius-tubular="0.032" color="#ff2222" opacity="0.42"
+          animation="property:rotation; to:0 360 0; loop:true; dur:6800; easing:linear"></a-torus>
+        <a-sphere radius="0.60" color="#bb0f0f"
+          material="shader:standard; metalness:0.25; roughness:0.55; emissive:#440000; emissiveIntensity:0.45"
+          animation="property:scale; to:1.08 1.08 1.08; dir:alternate; loop:true; dur:1700; easing:easeInOutSine"
           link="href:node-f.html" class="clickable" cursor-listener>
         </a-sphere>
-        <a-plane position="0 0 0.65" width="0.52" height="0.52"
+        <a-plane position="0 0 0.61" width="0.48" height="0.48"
           color="#990000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="F" position="0 0 0.67" align="center"
+        <a-text value="F" position="0 0 0.63" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="1.0" baseline="center"></a-text>
-        <a-text value="API Integration" position="0 -1.12 0"
-          align="center" color="#ffaaaa" width="3.8"></a-text>
-        <a-text value="CRITICAL  ·  Convergence  ·  Float: 0" position="0 -1.56 0"
-          align="center" color="#ff4444" width="3.5"></a-text>
+          color="#ffffff" width="0.9" baseline="center"></a-text>
+        <a-text value="API Integration" position="0 -1.04 0"
+          align="center" color="#ffaaaa" width="3.5"></a-text>
+        <a-text value="CRITICAL  ·  Convergence  ·  Float: 0" position="0 -1.42 0"
+          align="center" color="#ff4444" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            NODE G — Unit Testing
-           CRITICAL  |  2 days  |  Float: 0
+           Position:  8  1.6  -6  |  CRITICAL  |  Float: 0
       ══════════════════════════════════════════════════ -->
-      <a-entity position="6.5 2.8 -4.5">
-        <a-torus radius="0.80" radius-tubular="0.030" color="#ff2222" opacity="0.40"
+      <a-entity position="7 1.6 -6">
+        <a-torus radius="0.75" radius-tubular="0.028" color="#ff2222" opacity="0.35"
           animation="property:rotation; to:0 360 0; loop:true; dur:8500; easing:linear"></a-torus>
-        <a-sphere radius="0.60" color="#cc1111"
-          material="shader:standard; metalness:0.30; roughness:0.50; emissive:#550000; emissiveIntensity:0.55"
-          animation="property:scale; to:1.08 1.08 1.08; dir:alternate; loop:true; dur:1900; easing:easeInOutSine"
+        <a-sphere radius="0.56" color="#bb0f0f"
+          material="shader:standard; metalness:0.25; roughness:0.55; emissive:#440000; emissiveIntensity:0.45"
+          animation="property:scale; to:1.07 1.07 1.07; dir:alternate; loop:true; dur:1900; easing:easeInOutSine"
           link="href:node-g.html" class="clickable" cursor-listener>
         </a-sphere>
-        <a-plane position="0 0 0.61" width="0.50" height="0.50"
+        <a-plane position="0 0 0.57" width="0.46" height="0.46"
           color="#990000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="G" position="0 0 0.63" align="center"
+        <a-text value="G" position="0 0 0.59" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="1.0" baseline="center"></a-text>
-        <a-text value="Unit Testing" position="0 -1.08 0"
-          align="center" color="#ffaaaa" width="3.8"></a-text>
-        <a-text value="CRITICAL  ·  2 days  ·  Float: 0" position="0 -1.52 0"
-          align="center" color="#ff4444" width="3.5"></a-text>
+          color="#ffffff" width="0.9" baseline="center"></a-text>
+        <a-text value="Unit Testing" position="0 -1.0 0"
+          align="center" color="#ffaaaa" width="3.5"></a-text>
+        <a-text value="CRITICAL  ·  Float: 0" position="0 -1.38 0"
+          align="center" color="#ff4444" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            NODE H — User Acceptance Testing
-           CRITICAL  |  3 days  |  Float: 0
+           Position: 11  1.6  -5  |  CRITICAL  |  Float: 0
       ══════════════════════════════════════════════════ -->
-      <a-entity position="8.0 2.8 -4.0">
-        <a-torus radius="0.80" radius-tubular="0.030" color="#ff2222" opacity="0.40"
+      <a-entity position="9 1.6 -5">
+        <a-torus radius="0.75" radius-tubular="0.028" color="#ff2222" opacity="0.35"
           animation="property:rotation; to:0 360 0; loop:true; dur:9200; easing:linear"></a-torus>
-        <a-sphere radius="0.60" color="#cc1111"
-          material="shader:standard; metalness:0.30; roughness:0.50; emissive:#550000; emissiveIntensity:0.55"
-          animation="property:scale; to:1.08 1.08 1.08; dir:alternate; loop:true; dur:2000; easing:easeInOutSine"
+        <a-sphere radius="0.56" color="#bb0f0f"
+          material="shader:standard; metalness:0.25; roughness:0.55; emissive:#440000; emissiveIntensity:0.45"
+          animation="property:scale; to:1.07 1.07 1.07; dir:alternate; loop:true; dur:2000; easing:easeInOutSine"
           link="href:node-h.html" class="clickable" cursor-listener>
         </a-sphere>
-        <a-plane position="0 0 0.61" width="0.50" height="0.50"
+        <a-plane position="0 0 0.57" width="0.46" height="0.46"
           color="#990000" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="H" position="0 0 0.63" align="center"
+        <a-text value="H" position="0 0 0.59" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="1.0" baseline="center"></a-text>
-        <a-text value="User Acceptance Testing" position="0 -1.08 0"
-          align="center" color="#ffaaaa" width="3.8"></a-text>
-        <a-text value="CRITICAL  ·  3 days  ·  Float: 0" position="0 -1.52 0"
-          align="center" color="#ff4444" width="3.5"></a-text>
+          color="#ffffff" width="0.9" baseline="center"></a-text>
+        <a-text value="User Acceptance Testing" position="0 -1.0 0"
+          align="center" color="#ffaaaa" width="3.5"></a-text>
+        <a-text value="CRITICAL  ·  Float: 0" position="0 -1.38 0"
+          align="center" color="#ff4444" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            NODE I — Deployment (PROJECT END)
-           CRITICAL GOLD  |  1 day  |  Float: 0
+           Position: 13  1.6  -4  |  CRITICAL GOLD
       ══════════════════════════════════════════════════ -->
-      <a-entity position="9.5 2.8 -4.0">
-        <!-- Triple ring — project terminus -->
-        <a-torus radius="0.88" radius-tubular="0.036" color="#ffcc00" opacity="0.60"
-          animation="property:rotation; to:0 360 0; loop:true; dur:4500; easing:linear"></a-torus>
-        <a-torus radius="1.06" radius-tubular="0.020" color="#ffaa00" opacity="0.30"
-          animation="property:rotation; to:0 -360 0; loop:true; dur:8000; easing:linear"></a-torus>
-        <a-sphere radius="0.64" color="#cc8800"
-          material="shader:standard; metalness:0.55; roughness:0.28; emissive:#775500; emissiveIntensity:0.70"
-          animation="property:scale; to:1.10 1.10 1.10; dir:alternate; loop:true; dur:1500; easing:easeInOutSine"
+      <a-entity position="11 1.6 -4">
+        <!-- Triple ring treatment for project end -->
+        <a-torus radius="0.82" radius-tubular="0.034" color="#ffcc00" opacity="0.55"
+          animation="property:rotation; to:0 360 0; loop:true; dur:4800; easing:linear"></a-torus>
+        <a-torus radius="0.98" radius-tubular="0.018" color="#ffaa00" opacity="0.28"
+          animation="property:rotation; to:0 -360 0; loop:true; dur:8500; easing:linear"></a-torus>
+        <a-sphere radius="0.60" color="#cc8800"
+          material="shader:standard; metalness:0.5; roughness:0.3; emissive:#664400; emissiveIntensity:0.65"
+          animation="property:scale; to:1.1 1.1 1.1; dir:alternate; loop:true; dur:1500; easing:easeInOutSine"
           link="href:node-i.html" class="clickable" cursor-listener>
         </a-sphere>
-        <a-plane position="0 0 0.65" width="0.52" height="0.52"
+        <a-plane position="0 0 0.61" width="0.48" height="0.48"
           color="#996600" opacity="1" material="shader:flat"></a-plane>
-        <a-text value="I" position="0 0 0.67" align="center"
+        <a-text value="I" position="0 0 0.63" align="center"
           font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          color="#ffffff" width="1.0" baseline="center"></a-text>
-        <a-text value="Deployment" position="0 -1.12 0"
-          align="center" color="#ffdd88" width="3.8"></a-text>
-        <a-text value="PROJECT END  ·  Day 20" position="0 -1.56 0"
-          align="center" color="#ffdd00" width="3.5"></a-text>
+          color="#ffffff" width="0.9" baseline="center"></a-text>
+        <a-text value="Deployment" position="0 -1.04 0"
+          align="center" color="#ffdd88" width="3.5"></a-text>
+        <a-text value="PROJECT END  ·  Day 20" position="0 -1.42 0"
+          align="center" color="#ffdd00" width="3.2"></a-text>
       </a-entity>
 
       <!-- ══════════════════════════════════════════════════
            CONSEQUENCE SIMULATOR PORTAL
+           Positioned below the network, centred
       ══════════════════════════════════════════════════ -->
-      <a-entity position="3.2 0.2 -4.5">
-        <a-plane width="8.5" height="0.66" color="#0e0520" opacity="0.96"
+      <a-entity position="3 -0.1 -6">
+        <a-plane width="5.2" height="0.62" color="#150828" opacity="0.94"
           material="shader:flat"
           link="href:consequence.html"
           class="clickable"
           cursor-listener>
         </a-plane>
-        <a-plane width="8.5" height="0.048" color="#9944ff" opacity="0.75"
-          material="shader:flat" position="0  0.356 0.01"></a-plane>
-        <a-plane width="8.5" height="0.048" color="#9944ff" opacity="0.75"
-          material="shader:flat" position="0 -0.356 0.01"></a-plane>
-        <a-text value="CONSEQUENCE SIMULATOR  ·  See what happens when critical path tasks are delayed"
-          position="0 0 0.02" align="center" color="#cc88ff"
-          font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
-          width="8.2"></a-text>
+        <a-plane width="5.2" height="0.04" color="#9944ff" opacity="0.7"
+          material="shader:flat" position="0 0.33 0.01"></a-plane>
+        <a-plane width="5.2" height="0.04" color="#9944ff" opacity="0.7"
+          material="shader:flat" position="0 -0.33 0.01"></a-plane>
+        <a-text value="▶  ENTER CONSEQUENCE SIMULATOR  ◀     See what happens when tasks are delayed"
+          position="0 0 0.02" align="center" color="#cc88ff" width="5.0"></a-text>
       </a-entity>
 
-      <!-- ══════════════════════════════════════════════════
-           CAMERA
-           Centred on network midpoint X=(−4.5+10.5)/2=3.0
-           Elevated slightly Y=2.4, pulled back to Z=4.5
-           FOV=88 — wider than default to pull all nodes in
-      ══════════════════════════════════════════════════ -->
+      <!-- Camera centred on compressed network: X=(-5+11)/2=3, pulled back to Z=7 -->
       <a-entity
         camera="fov: 90; near: 0.1; far: 1000"
         look-controls="pointerLockEnabled: false"
         wasd-controls="acceleration: 18"
-        position="3.2 2.6 3.5"
+        position="3 10 4"
+        rotation="-45 0 0"
       >
         <a-cursor
           fuse="true"
@@ -520,11 +480,11 @@
           var el = this.el;
           el.addEventListener('mouseenter', function () {
             var mat = el.getAttribute('material');
-            if (mat) el.setAttribute('material', 'emissiveIntensity', 0.90);
+            if (mat) el.setAttribute('material', 'emissiveIntensity', 0.85);
           });
           el.addEventListener('mouseleave', function () {
             var mat = el.getAttribute('material');
-            if (mat) el.setAttribute('material', 'emissiveIntensity', 0.55);
+            if (mat) el.setAttribute('material', 'emissiveIntensity', 0.45);
           });
         }
       });
@@ -536,7 +496,9 @@
           if (bar) {
             bar.style.transition = 'opacity 2s ease';
             bar.style.opacity   = '0';
-            setTimeout(function () { bar.style.display = 'none'; }, 2000);
+            setTimeout(function () {
+              bar.style.display = 'none';
+            }, 2000);
           }
         }, 14000);
       });
