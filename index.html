@@ -121,7 +121,7 @@
 
          NODE POSITIONS (x  y  z):
          Critical path row (Z varies for depth):
-           A:  -3  1.6  -5    (start, nearest)
+           A:  -7  1.6  -5    (start, nearest)
            C:  -3  1.6  -7
            D:   1  1.6  -9    (deepest — longest task)
            F:   5  1.6  -7
@@ -191,7 +191,7 @@
            TITLE BANNER
            Positioned high above the network, centred
       ══════════════════════════════════════════════════ -->
-      <a-entity position="3 7.5 -5">
+      <a-entity position="3 6.5 -5">
         <a-plane width="9.5" height="0.72" color="#0a1428" opacity="0.92" material="shader:flat"></a-plane>
         <a-plane width="9.5" height="0.06" color="#4a9eff" opacity="0.6" material="shader:flat" position="0 0.39 0.01"></a-plane>
         <a-plane width="9.5" height="0.06" color="#4a9eff" opacity="0.6" material="shader:flat" position="0 -0.39 0.01"></a-plane>
@@ -438,11 +438,11 @@
 
       <!-- Camera centred on compressed network: X=(-5+11)/2=3, pulled back to Z=7 -->
       <a-entity
-        camera="fov: 90; near: 0.1; far: 1000"
+        camera="fov: 100; near: 0.1; far: 1000"
         look-controls="pointerLockEnabled: false"
         wasd-controls="acceleration: 18"
-        position="3 10 4"
-        rotation="-45 0 0"
+        position="3 2.0 -1.5"
+        rotation="0 0 0"
       >
         <a-cursor
           fuse="true"
