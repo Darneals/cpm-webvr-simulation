@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "If you use this simulation or build upon this work, please cite the associated paper using the metadata below."
+type: software
+title: "CPM WebVR Simulation"
+abstract: "A zero-cost, browser-native WebVR simulation for teaching the Critical Path Method (CPM) in undergraduate project management education. Built with A-Frame v1.4.0 and hosted on GitHub Pages. The simulation renders a nine-task software development CPM network as a navigable three-dimensional environment with colour-coded critical and non-critical path nodes, audio-narrated task scenes, and an interactive Consequence Simulator demonstrating cascade delay propagation."
+authors:
+  - family-names: Oyefidein
+    given-names: Daniel Tonye
+    affiliation: "Universiti Teknologi PETRONAS, Perak, Malaysia"
+repository-code: "https://github.com/Darneals/cpm-webvr-simulation"
+url: "https://darneals.github.io/cpm-webvr-simulation/"
+license: MIT
+version: "1.0.0"
+date-released: "2025-01-01"
+keywords:
+  - WebVR
+  - A-Frame
+  - Critical Path Method
+  - project management education
+  - immersive learning
+  - browser-based simulation
+  - cognitive load
+  - BYOD
+  - zero-cost
+  - CPM
+preferred-citation:
+  type: article
+  title: "Immersive Browser WebVR Simulation for Project Management Education: A Mixed-Methods Evaluation of CPM Knowledge, Cognitive Load, and Engagement in a BYOD Classroom"
+  authors:
+    - family-names: Oyefidein
+      given-names: Daniel Tonye
+      affiliation: "Universiti Teknologi PETRONAS, Perak, Malaysia"
+  journal: "Computers & Education: X Reality"
+  publisher:
+    name: Elsevier
+  status: under-review
+  year: 2025
